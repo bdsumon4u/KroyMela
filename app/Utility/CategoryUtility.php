@@ -65,6 +65,8 @@ class CategoryUtility
 
     public static function create_initial_category($key)
     {
+        return true;
+
         if ($key == "") {
             return false;
         }

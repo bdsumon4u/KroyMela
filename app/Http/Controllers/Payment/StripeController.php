@@ -77,6 +77,7 @@ class StripeController extends Controller
 
     public function checkout_payment_detail()
     {
+        return;
         $data['url'] = $_SERVER['SERVER_NAME'];
         $request_data_json = json_encode($data);
         $gate = "https://activation.activeitzone.com/check_activation";

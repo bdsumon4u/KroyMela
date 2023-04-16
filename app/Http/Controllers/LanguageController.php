@@ -232,6 +232,7 @@ class LanguageController extends Controller
 
     public function get_translation($unique_identifier)
     {
+        return;
         $data['url'] = $_SERVER['SERVER_NAME'];
         $data['unique_identifier'] = $unique_identifier;
         $data['main_item'] = get_setting('item_name') ?? 'eCommerce';
