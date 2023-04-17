@@ -28,7 +28,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $sort_search =null;
-        $categories = Category::orderBy('order_level', 'desc');
+        $categories = Category::orderBy('order_level');
         if ($request->has('search')){
             $sort_search = $request->search;
             $categories = $categories->where('name', 'like', '%'.$sort_search.'%');

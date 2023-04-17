@@ -14,7 +14,7 @@
         $cart_added = $cart->pluck('product_id')->toArray();
     }
 @endphp
-<div class="aiz-card-box h-auto bg-white py-3 hov-scale-img">
+<div class="aiz-card-box h-auto bg-white p-1 hov-scale-img">
     <div class="position-relative h-140px h-md-200px img-fit overflow-hidden">
         @php
             $product_url = route('product', $product->slug);
@@ -82,14 +82,14 @@
     
     <div class="p-2 p-md-3 text-left">
         <!-- Product name -->
-        <h3 class="fw-400 fs-13 text-truncate-2 lh-1-4 mb-0 h-35px text-center">
+        <h3 class="fw-400 fs-13 text-truncate-2 lh-1-4 mb-0 text-center">
             <a href="{{ $product_url }}" class="d-block text-reset hov-text-primary" title="{{  $product->getTranslation('name')  }}">{{  $product->getTranslation('name')  }}</a>
         </h3>
-        <div class="fs-14 d-flex justify-content-center mt-3">
+        <div class="fs-14 d-flex justify-content-center">
             @if($product->auction_product == 0)
                 <!-- Previous price -->
                 @if(home_base_price($product) != home_discounted_base_price($product))
-                    <div class="disc-amount has-transition">
+                    <div class="-disc-amount has-transition">
                         <del class="fw-400 text-secondary mr-1">{{ home_base_price($product) }}</del>
                     </div>
                 @endif

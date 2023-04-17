@@ -38,6 +38,13 @@
 @section('content')
     <section class="mb-4 pt-3">
         <div class="container">
+            <div class="">
+                <a href="{{ route('home') }}">{{ translate('Home') }}</a>
+                <i class="las la-angle-right"></i>
+                <a href="{{ route('products.category', $detailedProduct->category->slug) }}">{{ $detailedProduct->category->getTranslation('name') }}</a>
+                <i class="las la-angle-right"></i>
+                <a href="javascript:void(0);">{{ $detailedProduct->getTranslation('name') }}</a>
+            </div>
             <div class="bg-white py-3">
                 <div class="row">
                     <!-- Product Image Gallery -->

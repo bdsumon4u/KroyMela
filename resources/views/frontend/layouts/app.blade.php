@@ -153,6 +153,10 @@
         }
 
         .pac-container { z-index: 100000; }
+
+        .cart-btn {
+            transform: translateY(0);
+        }
     </style>
 
 @if (get_setting('google_analytics') == 1)

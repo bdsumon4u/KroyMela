@@ -40,7 +40,7 @@ class HomeController extends Controller
     public function index()
     {
         $featured_categories = Cache::rememberForever('featured_categories', function () {
-            return Category::where('featured', 1)->get();
+            return Category::where('featured', 1)->orderBy('order_level')->get();
         });
 
         $todays_deal_products = Cache::rememberForever('todays_deal_products', function () {
