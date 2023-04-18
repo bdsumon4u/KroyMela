@@ -22,7 +22,7 @@
               $product = \App\Models\Product::findOrFail($id);
               $flash_deal_product = \App\Models\FlashDealProduct::where('flash_deal_id', $flash_deal_id)->where('product_id', $product->id)->first();
             @endphp
-            <tr>
+            <tr idx="{{ $id }}" order="{{ $product->order }}">
                 <td>
                   <div class="form-group row">
                       <div class="col-auto">

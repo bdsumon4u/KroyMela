@@ -74,17 +74,16 @@
                         </div>
                     </div>
 
+                    @php $fd_products = \App\Models\FlashDealProduct::where('flash_deal_id', $flash_deal->id)->orderBy('order')->get(); @endphp
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="products">{{translate('Products')}}</label>
                         <div class="col-sm-9">
                             <select name="products[]" id="products" class="form-control aiz-selectpicker" multiple required data-placeholder="{{ translate('Choose Products') }}" data-live-search="true" data-selected-text-format="count">
                                 @foreach(\App\Models\Product::where('published', 1)->where('approved', 1)->get() as $product)
-                                    @php
-                                        $flash_deal_product = \App\Models\FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $product->id)->first();
-                                    @endphp
-                                    <option value="{{$product->id}}" <?php if($flash_deal_product != null) echo "selected";?> >{{ $product->getTranslation('name') }}</option>
+                                    <option value="{{$product->id}}" <?php if($fd_products->where('product_id', $product->id)->first() != null) echo "selected";?> >{{ $product->getTranslation('name') }}</option>
                                 @endforeach
                             </select>
+                            <input type="hidden" name="orders" value="{{ $fd_products->pluck('product_id')->join(',') }}">
                         </div>
                     </div>
 
@@ -109,6 +108,14 @@
 @endsection
 
 @section('script')
+    <style>
+        .ui-sortable-helper {
+            border: 1px solid red;
+            background: #dddddd;
+        }
+    </style>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+
     <script type="text/javascript">
         $(document).ready(function(){
 
@@ -119,11 +126,42 @@
             });
 
             function get_flash_deal_discount(){
-                var product_ids = $('#products').val();
+                var selected_products = $('#products').val();
+                var product_ids = $('[name="orders"]').val().split(',');
+                var intersection = selected_products.filter(x => product_ids.includes(x));
+                var extra_products = selected_products.filter(x => !product_ids.includes(x));
+                var removed_products = product_ids.filter(x => !selected_products.includes(x));
+                product_ids = product_ids.concat(extra_products).filter(x => !removed_products.includes(x));
+                $('[name="orders"]').val(product_ids.join(','));
+
                 if(product_ids.length > 0){
                     $.post('{{ route('flash_deals.product_discount_edit') }}', {_token:'{{ csrf_token() }}', product_ids:product_ids, flash_deal_id:{{ $flash_deal->id }}}, function(data){
                         $('#discount_table').html(data);
                         AIZ.plugins.fooTable();
+                        $("tbody").sortable({
+                            helper: function (e, ui) {
+                                ui.children().each(function () {
+                                    $(this).width($(this).width());
+                                });
+                                return ui;
+                            },
+                            update: function (event, ui) {
+                                $(this).children().each(function (index) {
+                                    if ($(this).attr('order') != index + 1) {
+                                        $(this).attr('order', index + 1).addClass('updated');
+                                    }
+                                });
+                                saveNewPositions();
+                            },
+                        });
+                        function saveNewPositions () {
+                            product_ids = [];
+                            $('tr[idx][order]').each(function () {
+                                product_ids.push($(this).attr('idx'));
+                            });
+                            $('input[name="orders"]').val(product_ids);
+                        }
+                        $("#sortable").disableSelection();
                     });
                 }
                 else{

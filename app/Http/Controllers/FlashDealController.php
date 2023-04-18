@@ -67,10 +67,11 @@ class FlashDealController extends Controller
         $flash_deal->slug = Str::slug($request->title).'-'.Str::random(5);
         $flash_deal->banner = $request->banner;
         if($flash_deal->save()){
-            foreach ($request->products as $key => $product) {
+            foreach (explode(',', $request->orders) as $key => $product) {
                 $flash_deal_product = new FlashDealProduct;
                 $flash_deal_product->flash_deal_id = $flash_deal->id;
                 $flash_deal_product->product_id = $product;
+                $flash_deal_product->order = $key + 1;
                 $flash_deal_product->save();
 
                 $root_product = Product::findOrFail($product);
@@ -149,10 +150,11 @@ class FlashDealController extends Controller
             $flash_deal_product->delete();
         }
         if($flash_deal->save()){
-            foreach ($request->products as $key => $product) {
+            foreach (explode(',', $request->orders) as $key => $product) {
                 $flash_deal_product = new FlashDealProduct;
                 $flash_deal_product->flash_deal_id = $flash_deal->id;
                 $flash_deal_product->product_id = $product;
+                $flash_deal_product->order = $key + 1;
                 $flash_deal_product->save();
 
                 $root_product = Product::findOrFail($product);
