@@ -235,4 +235,12 @@ class CategoryController extends Controller
         Cache::forget('featured_categories');
         return 1;
     }
+
+    public function reorder(Request $request)
+    {
+        foreach ($request->get('positions', []) as $position) {
+            Category::where('id', $position[0])->update(['order_level' => $position[1]]);
+        }
+        Cache::forget('featured_categories');
+    }
 }

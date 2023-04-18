@@ -51,7 +51,7 @@
             </thead>
             <tbody>
                 @foreach($categories as $key => $category)
-                    <tr>
+                    <tr idx="{{ $category->id }}" order="{{ $category->order_level }}">
                         <td>{{ ($key+1) + ($categories->currentPage() - 1)*$categories->perPage() }}</td>
                         <td>{{ $category->getTranslation('name') }}</td>
                         <td>
@@ -126,7 +126,59 @@
 
 
 @section('script')
+    <style>
+        .ui-sortable-helper {
+            border: 1px solid red;
+            background: #dddddd;
+        }
+    </style>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+
     <script type="text/javascript">
+        $(document).ready(function () {
+            $("tbody").sortable({
+                helper: function (e, ui) {
+                    ui.children().each(function () {
+                        $(this).width($(this).width());
+                    });
+                    return ui;
+                },
+                update: function (event, ui) {
+                    $(this).children().each(function (index) {
+                        if ($(this).attr('order') != index + 1) {
+                            $(this).attr('order', index + 1).addClass('updated');
+                        }
+                    });
+                    saveNewPositions();
+                },
+            });
+            function saveNewPositions () {
+                var positions = [];
+                $('tr.updated').each(function () {
+                    positions.push([$(this).attr('idx'), $(this).attr('order')]);
+                });
+                $.ajax({
+                    url: "{!! route('categories.reorder') !!}",
+                    method: 'POST',
+                    dataType: 'text',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        positions: positions,
+                    },
+                    success: function (response) {
+                        AIZ.plugins.notify('success', '{{ translate('Category order updated successfully') }}');
+                        $('tr.updated').each(function () {
+                            $(this).removeClass('updated');
+                        });
+                        window.location.reload();
+                    },
+                    error : function (error) {
+                        console.log(error);
+                    },
+                });
+            }
+            $("#sortable").disableSelection();
+        })
         function update_featured(el){
             if(el.checked){
                 var status = 1;
