@@ -891,7 +891,7 @@ function getShippingCost($carts, $index, $carrier = '')
             ]);
         }
 
-        $city = City::where('id', $shipping_info['city_id'])->first();
+        $city = City::where('id', $shipping_info['city_id'] ?? $carts[0]['destination']['city_id'] ?? 0)->first();
         if ($city != null) {
             if ($product->added_by == 'admin') {
                 return $city->cost / count($admin_products);

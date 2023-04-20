@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Models\City;
+use App\Models\Country;
 use App\Models\State;
 use Auth;
 
@@ -46,8 +47,8 @@ class AddressController extends Controller
             $address->user_id   = Auth::user()->id;
         }
         $address->address       = $request->address;
-        $address->country_id    = $request->country_id;
-        $address->state_id      = $request->state_id;
+        $address->country_id    = $request->country_id ?? Country::where('name', 'Bangladesh')->first()->id ?? null;
+        $address->state_id      = $request->state_id ?? State::where('name', 'Default')->first()->id ?? null;
         $address->city_id       = $request->city_id;
         $address->longitude     = $request->longitude;
         $address->latitude      = $request->latitude;
@@ -135,7 +136,7 @@ class AddressController extends Controller
         $html = '<option value="">'.translate("Select State").'</option>';
         
         foreach ($states as $state) {
-            $html .= '<option value="' . $state->id . '">' . $state->name . '</option>';
+            $html .= '<option value="' . $state->id . '" '.($state->name == 'Default' ? 'selected' : '').'>' . $state->name . '</option>';
         }
         
         echo json_encode($html);

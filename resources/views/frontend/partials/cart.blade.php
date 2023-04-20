@@ -89,16 +89,9 @@
             <div class="row gutters-10 justify-content-center">
                 <div class="col-sm-6 mb-2">
                     <a href="{{ route('cart') }}" class="btn btn-warning btn-sm btn-block rounded-4 text-white">
-                        {{ translate('View cart') }}
-                    </a>
-                </div>
-                @if (Auth::check())
-                <div class="col-sm-6">
-                    <a href="{{ route('checkout.shipping_info') }}" class="btn btn-primary btn-sm btn-block rounded-4">
                         {{ translate('Checkout') }}
                     </a>
                 </div>
-                @endif
             </div>
         </div>
     @else

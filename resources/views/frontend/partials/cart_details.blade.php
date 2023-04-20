@@ -1,7 +1,7 @@
 <div class="container">
     @if( $carts && count($carts) > 0 )
         <div class="row">
-            <div class="col-xxl-8 col-xl-10 mx-auto">
+            <div class="col mx-auto">
                 <div class="border bg-white p-3 p-lg-4 text-left">
                     <div class="mb-4">
                         <!-- Headers -->
@@ -96,11 +96,11 @@
                     </div>
 
                     <!-- Subtotal -->
-                    <div class="px-0 py-2 mb-4 border-top d-flex justify-content-between">
+                    <div class="px-0 py-2 border-top d-flex justify-content-between">
                         <span class="opacity-60 fs-14">{{translate('Subtotal')}}</span>
                         <span class="fw-700 fs-16">{{ single_price($total) }}</span>
                     </div>
-                    <div class="row align-items-center">
+                    {{-- <div class="row align-items-center">
                         <!-- Return to shop -->
                         <div class="col-md-6 text-center text-md-left order-1 order-md-0">
                             <a href="{{ route('home') }}" class="btn btn-link fs-14 fw-700 px-0">
@@ -114,13 +114,13 @@
                                 {{ translate('Continue to Shipping')}}
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
     @else
         <div class="row">
-            <div class="col-xl-8 mx-auto">
+            <div class="col mx-auto">
                 <div class="border bg-white p-4">
                     <!-- Empty cart -->
                     <div class="text-center p-3">
@@ -132,7 +132,3 @@
         </div>
     @endif
 </div>
-
-<script type="text/javascript">
-    AIZ.extra.plusMinus();
-</script>
