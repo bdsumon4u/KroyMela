@@ -73,10 +73,10 @@
                                                             <span class="fs-14 text-secondary col-3">{{ translate('Address') }}</span>
                                                             <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->address }}</span>
                                                         </div>
-                                                        <div class="row">
+                                                        {{-- <div class="row">
                                                             <span class="fs-14 text-secondary col-3">{{ translate('Postal Code') }}</span>
                                                             <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->postal_code }}</span>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="row">
                                                             <span class="fs-14 text-secondary col-3">{{ translate('City') }}</span>
                                                             <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->city)->name }}</span>
@@ -113,21 +113,124 @@
                                         <div class="alpha-7 fw-700">{{ translate('Add New Address') }}</div>
                                     </div>
                                 </div>
-                                <div class="row align-items-center">
-                                    <!-- Return to shop -->
-                                    <div class="col-md-6 text-center text-md-left order-1 order-md-0">
-                                        <a href="{{ route('home') }}" class="btn btn-link fs-14 fw-700 px-0">
-                                            <i class="las la-arrow-left fs-16"></i>
-                                            {{ translate('Return to shop')}}
-                                        </a>
+                            </div>
+                        @else
+                            <div class="shadow-sm bg-white rounded mb-4">
+                                <div class="p-3">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{ translate('Name')}}</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control mb-3" id="name" name="name" required>
+                                        </div>
                                     </div>
-                                    <!-- Continue to Delivery Info -->
-                                    <div class="col-md-6 text-center text-md-right">
-                                        <button type="submit" class="btn btn-primary fs-14 fw-700 rounded-0 px-4">{{ translate('Continue to Delivery Info')}}</a>
+
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{ translate('Phone')}}</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control mb-3" placeholder="{{ translate('+880')}}" name="phone" value="" required>
+                                        </div>
                                     </div>
+
+                                    <div class="row d-none">
+                                        <div class="col-md-2">
+                                            <label>{{ translate('Country')}}</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="mb-3">
+                                                <select class="form-control aiz-selectpicker" data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="country_id" required>
+                                                    <option value="">{{ translate('Select your country') }}</option>
+                                                    @foreach (\App\Models\Country::where('status', 1)->get() as $key => $country)
+                                                        <option value="{{ $country->id }}" @if($country->name == 'Bangladesh') selected @endif>{{ $country->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{ translate('District')}}</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="state_id" required>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{ translate('Thana')}}</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="city_id" required>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{ translate('Address')}}</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control mb-3" placeholder="{{ translate('Your Address')}}" rows="2" name="address" required></textarea>
+                                        </div>
+                                    </div>
+
+                                    @if (get_setting('google_map') == 1)
+                                        <div class="row">
+                                            <input id="searchInput" class="controls" type="text" placeholder="{{translate('Enter a location')}}">
+                                            <div id="map"></div>
+                                            <ul id="geoData">
+                                                <li style="display: none;">Full Address: <span id="location"></span></li>
+                                                {{-- <li style="display: none;">Postal Code: <span id="postal_code"></span></li> --}}
+                                                <li style="display: none;">Country: <span id="country"></span></li>
+                                                <li style="display: none;">Latitude: <span id="lat"></span></li>
+                                                <li style="display: none;">Longitude: <span id="lon"></span></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-2" id="">
+                                                <label for="exampleInputuname">Longitude</label>
+                                            </div>
+                                            <div class="col-md-10" id="">
+                                                <input type="text" class="form-control mb-3" id="longitude" name="longitude" readonly="">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2" id="">
+                                                <label for="exampleInputuname">Latitude</label>
+                                            </div>
+                                            <div class="col-md-10" id="">
+                                                <input type="text" class="form-control mb-3" id="latitude" name="latitude" readonly="">
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <input type="hidden" class="form-control mb-3" name="postal_code" value="">
                                 </div>
                             </div>
+                            <input type="hidden" name="checkout_type" value="guest">
                         @endif
+                        <div class="row align-items-center">
+                            <!-- Return to shop -->
+                            <div class="col-md-6 text-center text-md-left order-1 order-md-0">
+                                <a href="{{ route('home') }}" class="btn btn-link fs-14 fw-700 px-0">
+                                    <i class="las la-arrow-left fs-16"></i>
+                                    {{ translate('Return to shop')}}
+                                </a>
+                            </div>
+                            <!-- Continue to Delivery Info -->
+                            <div class="col-md-6 text-center text-md-right">
+                                <button type="submit" class="btn btn-primary fs-14 fw-700 rounded-0 px-4">{{ translate('Continue to Delivery Info')}}</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

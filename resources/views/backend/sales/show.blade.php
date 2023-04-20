@@ -101,15 +101,16 @@
             </div>
             <div class="row gutters-5">
                 <div class="col text-md-left text-center">
-                    @if(json_decode($order->shipping_address))
+                    @if($s_address = json_decode($order->shipping_address))
                         <address>
                             <strong class="text-main">
-                                {{ json_decode($order->shipping_address)->name }}
+                                {{ $s_address->name }}
                             </strong><br>
-                            {{ json_decode($order->shipping_address)->email }}<br>
-                            {{ json_decode($order->shipping_address)->phone }}<br>
-                            {{ json_decode($order->shipping_address)->address }}, {{ json_decode($order->shipping_address)->city }}, @if(isset(json_decode($order->shipping_address)->state)) {{ json_decode($order->shipping_address)->state }} - @endif {{ json_decode($order->shipping_address)->postal_code }}<br>
-                            {{ json_decode($order->shipping_address)->country }}
+                            {{ $s_address->email }}<br>
+                            {{ $s_address->phone }}<br>
+                            {{ $s_address->address }}
+                            {{-- , {{ $s_address->city }}, @if(isset($_address)->state)) {{ $s_address->state }} - @endif {{ $s_address->postal_code }}<br> --}}
+                            {{-- {{ $s_address->country }} --}}
                         </address>
                     @else
                         <address>

@@ -23,9 +23,7 @@
                             <select class="form-control aiz-selectpicker" data-live-search="true" id="sort_country" name="sort_country">
                                 <option value="">{{ translate('Select Country') }}</option>
                                 @foreach (\App\Models\Country::where('status', 1)->get() as $country)
-                                    <option value="{{ $country->id }}" @if ($sort_country == $country->id) selected @endif {{$sort_country}}>
-                                        {{ $country->name }}
-                                    </option>
+                                    <option value="{{ $country->id }}" @if($country->name == 'Bangladesh') selected @endif>{{ $country->name }}</option>
                                 @endforeach
                             </select>
                         </div>

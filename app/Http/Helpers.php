@@ -30,6 +30,7 @@ use App\Http\Resources\V2\CarrierCollection;
 use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\ClubPointController;
 use App\Http\Controllers\CommissionController;
+use App\Models\State;
 
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
@@ -444,6 +445,12 @@ if (!function_exists('carts_product_discount')) {
 if (!function_exists('carts_coupon_discount')) {
     function carts_coupon_discount($code, $formatted = false)
     {
+        if (Auth::check()) {
+            $cart = Cart::where('user_id', Auth::user()->id);
+        } else {
+            $cart = Cart::where('temp_user_id', request()->session()->get('temp_user_id'));
+        }
+
         $coupon = Coupon::where('code', $code)->first();
         $coupon_discount = 0;
         if ($coupon != null) {
@@ -451,8 +458,7 @@ if (!function_exists('carts_coupon_discount')) {
                 if (CouponUsage::where('user_id', Auth::user()->id)->where('coupon_id', $coupon->id)->first() == null) {
                     $coupon_details = json_decode($coupon->details);
 
-                    $carts = Cart::where('user_id', Auth::user()->id)
-                        ->where('owner_id', $coupon->user_id)
+                    $carts = $cart->where('owner_id', $coupon->user_id)
                         ->get();
 
                     if ($coupon->type == 'cart_base') {
@@ -495,16 +501,14 @@ if (!function_exists('carts_coupon_discount')) {
             }
 
             if ($coupon_discount > 0) {
-                Cart::where('user_id', Auth::user()->id)
-                    ->where('owner_id', $coupon->user_id)
+                $cart->where('owner_id', $coupon->user_id)
                     ->update(
                         [
                             'discount' => $coupon_discount / count($carts),
                         ]
                     );
             } else {
-                Cart::where('user_id', Auth::user()->id)
-                    ->where('owner_id', $coupon->user_id)
+                $cart->where('owner_id', $coupon->user_id)
                     ->update(
                         [
                             'discount' => 0,
@@ -877,8 +881,17 @@ function getShippingCost($carts, $index, $carrier = '')
             return Shop::where('user_id', $product->user_id)->first()->shipping_cost / count($seller_products[$product->user_id]);
         }
     } elseif ($shipping_type == 'area_wise_shipping') {
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
-        $city = City::where('id', $shipping_info->city_id)->first();
+        if (Auth::check()) {
+            $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
+        } else {
+            $shipping_info = array_merge($destination = $carts[0]['destination'], [
+                'city' => City::find($destination['city_id'])->name,
+                'state' => State::find($destination['state_id'])->name,
+                'country' => Country::find($destination['country_id'])->name,
+            ]);
+        }
+
+        $city = City::where('id', $shipping_info['city_id'])->first();
         if ($city != null) {
             if ($product->added_by == 'admin') {
                 return $city->cost / count($admin_products);

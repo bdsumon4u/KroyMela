@@ -45,7 +45,7 @@ class NotificationUtility
 
             $request->type = "order";
             $request->id = $order->id;
-            $request->user_id = $order->user->id;
+            $request->user_id = $order->user_id;
 
             self::sendFirebaseNotification($request);
         }
@@ -54,9 +54,9 @@ class NotificationUtility
     public static function sendNotification($order, $order_status)
     {        
         if ($order->seller_id == \App\Models\User::where('user_type', 'admin')->first()->id) {
-            $users = User::findMany([$order->user->id, $order->seller_id]);
+            $users = User::findMany([$order->user_id, $order->seller_id]);
         } else {
-            $users = User::findMany([$order->user->id, $order->seller_id, \App\Models\User::where('user_type', 'admin')->first()->id]);
+            $users = User::findMany([$order->user_id, $order->seller_id, \App\Models\User::where('user_type', 'admin')->first()->id]);
         }
 
         $order_notification = array();

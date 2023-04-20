@@ -233,6 +233,17 @@ Route::controller(CompareController::class)->group(function () {
 // Subscribe
 Route::resource('subscribers', SubscriberController::class);
 
+// Checkout Routs
+Route::group(['prefix' => 'checkout'], function() {
+    Route::controller(CheckoutController::class)->group(function () {
+        Route::get('/', 'get_shipping_info')->name('checkout.shipping_info');
+        Route::any('/delivery_info', 'store_shipping_info')->name('checkout.store_shipping_infostore');
+        Route::post('/payment_select', 'store_delivery_info')->name('checkout.store_delivery_info');
+        Route::get('/order-confirmed', 'order_confirmed')->name('order_confirmed');
+        Route::post('/payment', 'checkout')->name('payment.checkout');
+    });
+});
+
 Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
 
     Route::controller(HomeController::class)->group(function () {
@@ -252,11 +263,6 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() 
     // Checkout Routs
     Route::group(['prefix' => 'checkout'], function() {
         Route::controller(CheckoutController::class)->group(function () {
-            Route::get('/', 'get_shipping_info')->name('checkout.shipping_info');
-            Route::any('/delivery_info', 'store_shipping_info')->name('checkout.store_shipping_infostore');
-            Route::post('/payment_select', 'store_delivery_info')->name('checkout.store_delivery_info');
-            Route::get('/order-confirmed', 'order_confirmed')->name('order_confirmed');
-            Route::post('/payment', 'checkout')->name('payment.checkout');
             Route::post('/get_pick_up_points', 'get_pick_up_points')->name('shipping_info.get_pick_up_points');
             Route::get('/payment-select', 'get_payment_info')->name('checkout.payment_info');
             Route::post('/apply_coupon_code', 'apply_coupon_code')->name('checkout.apply_coupon_code');
@@ -339,8 +345,8 @@ Route::group(['middleware' => ['auth']], function() {
     //Address
     Route::resource('addresses', AddressController::class);
     Route::controller(AddressController::class)->group(function () {
-        Route::post('/get-states', 'getStates')->name('get-state');
-        Route::post('/get-cities', 'getCities')->name('get-city');
+        Route::post('/get-states', 'getStates')->name('get-state')->withoutMiddleware('auth');
+        Route::post('/get-cities', 'getCities')->name('get-city')->withoutMiddleware('auth');
         Route::post('/addresses/update/{id}', 'update')->name('addresses.update');
         Route::get('/addresses/destroy/{id}', 'destroy')->name('addresses.destroy');
         Route::get('/addresses/set_default/{id}', 'set_default')->name('addresses.set_default');

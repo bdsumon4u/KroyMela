@@ -21,9 +21,7 @@
                     <select class="form-control aiz-selectpicker rounded-0" data-live-search="true" data-placeholder="{{ translate('Select your country')}}" name="country_id" id="edit_country" required>
                         <option value="">{{ translate('Select your country') }}</option>
                         @foreach (\App\Models\Country::where('status', 1)->get() as $key => $country)
-                        <option value="{{ $country->id }}" @if($address_data->country_id == $country->id) selected @endif>
-                            {{ $country->name }}
-                        </option>
+                            <option value="{{ $country->id }}" @if($country->name == 'Bangladesh') selected @endif>{{ $country->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -69,7 +67,7 @@
                 <div id="edit_map"></div>
                 <ul id="geoData">
                     <li style="display: none;">Full Address: <span id="location"></span></li>
-                    <li style="display: none;">Postal Code: <span id="postal_code"></span></li>
+                    {{-- <li style="display: none;">Postal Code: <span id="postal_code"></span></li> --}}
                     <li style="display: none;">Country: <span id="country"></span></li>
                     <li style="display: none;">Latitude: <span id="lat"></span></li>
                     <li style="display: none;">Longitude: <span id="lon"></span></li>
@@ -96,14 +94,14 @@
         @endif
 
         <!-- Postal code -->
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-2">
                 <label>{{ translate('Postal code')}}</label>
             </div>
             <div class="col-md-10">
                 <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Your Postal Code')}}" value="{{ $address_data->postal_code }}" name="postal_code" value="" required>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Phone -->
         <div class="row">

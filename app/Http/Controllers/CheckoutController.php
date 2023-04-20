@@ -11,8 +11,11 @@ use App\Models\Coupon;
 use App\Models\CouponUsage;
 use App\Models\Address;
 use App\Models\Carrier;
+use App\Models\City;
 use App\Models\CombinedOrder;
+use App\Models\Country;
 use App\Models\Product;
+use App\Models\State;
 use App\Utility\PayhereUtility;
 use App\Utility\NotificationUtility;
 use Session;
@@ -26,13 +29,21 @@ class CheckoutController extends Controller
         //
     }
 
+    private function cart() {
+        if (Auth::check()) {
+            return Cart::where('user_id', Auth::user()->id);
+        }
+
+        return Cart::where('temp_user_id', request()->session()->get('temp_user_id'));
+    }
+
     //check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
     {
         // Minumum order amount check
         if(get_setting('minimum_order_amount_check') == 1){
             $subtotal = 0;
-            foreach (Cart::where('user_id', Auth::user()->id)->get() as $key => $cartItem){ 
+            foreach ($this->cart()->get() as $key => $cartItem){ 
                 $product = Product::find($cartItem['product_id']);
                 $subtotal += cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
             }
@@ -100,7 +111,7 @@ class CheckoutController extends Controller
 
     public function get_shipping_info(Request $request)
     {
-        $carts = Cart::where('user_id', Auth::user()->id)->get();
+        $carts = $this->cart()->get();
 //        if (Session::has('cart') && count(Session::get('cart')) > 0) {
         if ($carts && count($carts) > 0) {
             $categories = Category::all();
@@ -112,12 +123,26 @@ class CheckoutController extends Controller
 
     public function store_shipping_info(Request $request)
     {
+        $rules = [
+            'name' => 'required',
+            'address' => 'required',
+            'country_id' => 'required|integer',
+            'state_id' => 'required|integer',
+            'city_id' => 'required|integer',
+            'postal_code' => 'nullable',
+            'phone' => 'required',
+        ];
+
         if ($request->address_id == null) {
-            flash(translate("Please add shipping address"))->warning();
-            return back();
+            $address = $request->validate($rules);
+        } else {
+            $address = data_get(
+                Address::findOrFail($request->address_id)->toArray(),
+                array_keys($rules)
+            );
         }
 
-        $carts = Cart::where('user_id', Auth::user()->id)->get();
+        $carts = $this->cart()->get();
         if($carts->isEmpty()) {
             flash(translate('Your cart is empty'))->warning();
             return redirect()->route('home');
@@ -125,6 +150,7 @@ class CheckoutController extends Controller
 
         foreach ($carts as $key => $cartItem) {
             $cartItem->address_id = $request->address_id;
+            $cartItem->destination = $address;
             $cartItem->save();
         }
 
@@ -145,7 +171,7 @@ class CheckoutController extends Controller
 
     public function store_delivery_info(Request $request)
     {
-        $carts = Cart::where('user_id', Auth::user()->id)
+        $carts = $this->cart()
                 ->get();
 
         if($carts->isEmpty()) {
@@ -153,8 +179,15 @@ class CheckoutController extends Controller
             return redirect()->route('home');
         }
 
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
-        $total = 0;
+        if (Auth::check()) {
+            $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
+        } else {
+            $shipping_info = array_merge($destination = $carts[0]['destination'], [
+                'city' => City::find($destination['city_id'])->name,
+                'state' => State::find($destination['state_id'])->name,
+                'country' => Country::find($destination['country_id'])->name,
+            ]);
+        }        $total = 0;
         $tax = 0;
         $shipping = 0;
         $subtotal = 0;
@@ -186,7 +219,7 @@ class CheckoutController extends Controller
                 $shipping += $cartItem['shipping_cost'];
                 $cartItem->save();
             }
-            $total = $subtotal + $tax + $shipping;
+            $total = round($subtotal + $tax + $shipping);
 
             return view('frontend.payment_select', compact('carts', 'shipping_info', 'total'));
 
@@ -206,7 +239,7 @@ class CheckoutController extends Controller
                 if (CouponUsage::where('user_id', Auth::user()->id)->where('coupon_id', $coupon->id)->first() == null) {
                     $coupon_details = json_decode($coupon->details);
 
-                    $carts = Cart::where('user_id', Auth::user()->id)
+                    $carts = $this->cart()
                                     ->where('owner_id', $coupon->user_id)
                                     ->get();
 
@@ -250,7 +283,7 @@ class CheckoutController extends Controller
                     }
 
                     if($coupon_discount > 0){
-                        Cart::where('user_id', Auth::user()->id)
+                        $this->cart()
                             ->where('owner_id', $coupon->user_id)
                             ->update(
                                 [
@@ -280,7 +313,7 @@ class CheckoutController extends Controller
             $response_message['message'] = translate('Invalid coupon!');
         }
 
-        $carts = Cart::where('user_id', Auth::user()->id)
+        $carts = $this->cart()
                 ->get();
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
 
@@ -290,7 +323,7 @@ class CheckoutController extends Controller
 
     public function remove_coupon_code(Request $request)
     {
-        Cart::where('user_id', Auth::user()->id)
+        $this->cart()
                 ->update(
                         [
                             'discount' => 0.00,
@@ -300,7 +333,7 @@ class CheckoutController extends Controller
         );
 
         $coupon = Coupon::where('code', $request->code)->first();
-        $carts = Cart::where('user_id', Auth::user()->id)
+        $carts = $this->cart()
                 ->get();
 
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();

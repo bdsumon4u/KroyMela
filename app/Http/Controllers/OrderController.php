@@ -18,6 +18,9 @@ use App\Models\SmsTemplate;
 use Auth;
 use Mail;
 use App\Mail\InvoiceEmailManager;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\State;
 use App\Utility\NotificationUtility;
 use CoreComponentRepository;
 use App\Utility\SmsUtility;
@@ -32,6 +35,14 @@ class OrderController extends Controller
         $this->middleware(['permission:view_all_orders|view_inhouse_orders|view_seller_orders|view_pickup_point_orders'])->only('all_orders');
         $this->middleware(['permission:view_order_details'])->only('show');
         $this->middleware(['permission:delete_order'])->only('destroy','bulk_order_delete');
+    }
+
+    private function cart() {
+        if (Auth::check()) {
+            return Cart::where('user_id', Auth::user()->id);
+        }
+
+        return Cart::where('temp_user_id', request()->session()->get('temp_user_id'));
     }
 
     // All Orders
@@ -129,20 +140,28 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $carts = Cart::where('user_id', Auth::user()->id)
-            ->get();
+        $carts = $this->cart()->get();
 
         if ($carts->isEmpty()) {
             flash(translate('Your cart is empty'))->warning();
             return redirect()->route('home');
         }
 
-        $address = Address::where('id', $carts[0]['address_id'])->first();
+        if (Auth::check()) {
+            $address = Address::where('id', $carts[0]['address_id'])->first();
+        } else {
+            $address = (object)array_merge($destination = $carts[0]['destination'], [
+                'city' => City::find($destination['city_id']),
+                'state' => State::find($destination['state_id']),
+                'country' => Country::find($destination['country_id']),
+                'latitude' => null, 'longitude' => null,
+            ]);
+        }
 
         $shippingAddress = [];
         if ($address != null) {
-            $shippingAddress['name']        = Auth::user()->name;
-            $shippingAddress['email']       = Auth::user()->email;
+            $shippingAddress['name']        = Auth::user()->name ?? data_get($address, 'name');
+            $shippingAddress['email']       = Auth::user()->email ?? 'N/A';
             $shippingAddress['address']     = $address->address;
             $shippingAddress['country']     = $address->country->name;
             $shippingAddress['state']       = $address->state->name;
@@ -155,7 +174,7 @@ class OrderController extends Controller
         }
 
         $combined_order = new CombinedOrder;
-        $combined_order->user_id = Auth::user()->id;
+        $combined_order->user_id = Auth::user()->id ?? 0;
         $combined_order->shipping_address = json_encode($shippingAddress);
         $combined_order->save();
 
@@ -173,7 +192,7 @@ class OrderController extends Controller
         foreach ($seller_products as $seller_product) {
             $order = new Order;
             $order->combined_order_id = $combined_order->id;
-            $order->user_id = Auth::user()->id;
+            $order->user_id = Auth::user()->id ?? 0;
             $order->shipping_address = $combined_order->shipping_address;
 
             $order->additional_info = $request->additional_info;
@@ -269,14 +288,14 @@ class OrderController extends Controller
                 }
             }
 
-            $order->grand_total = $subtotal + $tax + $shipping;
+            $order->grand_total = round($subtotal + $tax + $shipping);
 
             if ($seller_product[0]->coupon_code != null) {
                 $order->coupon_discount = $coupon_discount;
                 $order->grand_total -= $coupon_discount;
 
                 $coupon_usage = new CouponUsage;
-                $coupon_usage->user_id = Auth::user()->id;
+                $coupon_usage->user_id = Auth::user()->id ?? 0;
                 $coupon_usage->coupon_id = Coupon::where('code', $seller_product[0]->coupon_code)->first()->id;
                 $coupon_usage->save();
             }
