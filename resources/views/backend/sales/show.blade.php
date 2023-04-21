@@ -11,8 +11,6 @@
                 <div class="col text-md-left text-center">
                 </div>
                 @php
-                    $delivery_status = $order->delivery_status;
-                    $payment_status = $order->payment_status;
                     $admin_user_id = App\Models\User::where('user_type', 'admin')->first()->id;
                 @endphp
 
@@ -22,7 +20,7 @@
                     @if (addon_is_activated('delivery_boy'))
                         <div class="col-md-3 ml-auto">
                             <label for="assign_deliver_boy">{{ translate('Assign Deliver Boy') }}</label>
-                            @if (($delivery_status == 'pending' || $delivery_status == 'confirmed' || $delivery_status == 'picked_up') && auth()->user()->can('assign_delivery_boy_for_orders'))
+                            @if (($order->delivery_status == 'pending' || $order->delivery_status == 'confirmed' || $order->delivery_status == 'picked_up') && auth()->user()->can('assign_delivery_boy_for_orders'))
                                 <select class="form-control aiz-selectpicker" data-live-search="true"
                                     data-minimum-results-for-search="Infinity" id="assign_deliver_boy">
                                     <option value="">{{ translate('Select Delivery Boy') }}</option>
@@ -45,43 +43,54 @@
                         @if (auth()->user()->can('update_order_payment_status'))
                             <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
                                 id="update_payment_status">
-                                <option value="unpaid" @if ($payment_status == 'unpaid') selected @endif>
+                                <option value="unpaid" @if ($order->payment_status == 'unpaid') selected @endif>
                                     {{ translate('Unpaid') }}
                                 </option>
-                                <option value="paid" @if ($payment_status == 'paid') selected @endif>
+                                <option value="paid" @if ($order->payment_status == 'paid') selected @endif>
                                     {{ translate('Paid') }}
                                 </option>
                             </select>
                         @else
-                            <input type="text" class="form-control" value="{{ $payment_status }}" disabled>
+                            <input type="text" class="form-control" value="{{ $order->payment_status }}" disabled>
                         @endif
                     </div>
                     <div class="col-md-3 ml-auto">
-                        <label for="update_delivery_status">{{ translate('Delivery Status') }}</label>
-                        @if (auth()->user()->can('update_order_delivery_status') && $delivery_status != 'delivered' && $delivery_status != 'cancelled')
+                        <label for="update_payment_method">{{ translate('Payment Method') }}</label>
+                        @if (auth()->user()->can('update_order_payment_method'))
                             <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
-                                id="update_delivery_status">
-                                <option value="pending" @if ($delivery_status == 'pending') selected @endif>
-                                    {{ translate('Pending') }}
-                                </option>
-                                <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>
-                                    {{ translate('Confirmed') }}
-                                </option>
-                                <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
-                                    {{ translate('Picked Up') }}
-                                </option>
-                                <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
-                                    {{ translate('On The Way') }}
-                                </option>
-                                <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
-                                    {{ translate('Delivered') }}
-                                </option>
-                                <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
-                                    {{ translate('Cancel') }}
-                                </option>
+                                id="update_payment_method">
+                                @foreach (config('order.payments') as $method)
+                                    <option value="{{ $method }}" @if ($order->payment_method == $method) selected @endif>
+                                        {{ translate($method) }}
+                                    </option>
+                                @endforeach
                             </select>
                         @else
-                            <input type="text" class="form-control" value="{{ $delivery_status }}" disabled>
+                            <input type="text" class="form-control" value="{{ $payment_method }}" disabled>
+                        @endif
+                    </div>
+                    <div class="col-md-3 ml-auto">
+                        <label for="update_advanced">
+                            {{ translate('Advanced') }}
+                        </label>
+                        <input type="text" class="form-control" id="update_advanced"
+                            value="{{ $order->advanced }}">
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3 ml-auto">
+                        <label for="update_delivery_status">{{ translate('Delivery Status') }}</label>
+                        @if (auth()->user()->can('update_order_delivery_status') && $order->delivery_status != 'delivered' && $order->delivery_status != 'cancelled')
+                            <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
+                                id="update_delivery_status">
+                                @foreach (config('order.statuses') as $status)
+                                    <option value="{{ $status }}" @if ($order->delivery_status == $status) selected @endif>
+                                        {{ translate($status) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            <input type="text" class="form-control" value="{{ $order->delivery_status }}" disabled>
                         @endif
                     </div>
                     <div class="col-md-3 ml-auto">
@@ -90,6 +99,13 @@
                         </label>
                         <input type="text" class="form-control" id="update_tracking_code"
                             value="{{ $order->tracking_code }}">
+                    </div>
+                    <div class="col-md-3 ml-auto">
+                        <label for="update_discount">
+                            {{ translate('Discount') }}
+                        </label>
+                        <input type="text" class="form-control" id="update_discount"
+                            value="{{ $order->discount }}">
                     </div>
                 @endif
             </div>
@@ -145,13 +161,13 @@
                             <tr>
                                 <td class="text-main text-bold">{{ translate('Order Status') }}</td>
                                 <td class="text-right">
-                                    @if ($delivery_status == 'delivered')
+                                    @if ($order->delivery_status == 'delivered')
                                         <span class="badge badge-inline badge-success">
-                                            {{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}
+                                            {{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}
                                         </span>
                                     @else
                                         <span class="badge badge-inline badge-info">
-                                            {{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}
+                                            {{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}
                                         </span>
                                     @endif
                                 </td>
@@ -308,6 +324,17 @@
                                 {{ single_price($order->orderDetails->sum('shipping_cost')) }}
                             </td>
                         </tr>
+                        @if ($order->discount)
+                        <tr>
+                            <td>
+                                <strong class="text-muted">{{ translate('Discount') }} :</strong>
+                            </td>
+                            <td>
+                                {{ single_price($order->discount) }}
+                            </td>
+                        </tr>
+                        @endif
+                        @if ($order->coupon_discount)
                         <tr>
                             <td>
                                 <strong class="text-muted">{{ translate('Coupon') }} :</strong>
@@ -316,12 +343,23 @@
                                 {{ single_price($order->coupon_discount) }}
                             </td>
                         </tr>
+                        @endif
+                        @if ($order->advanced)
                         <tr>
                             <td>
-                                <strong class="text-muted">{{ translate('TOTAL') }} :</strong>
+                                <strong class="text-muted">{{ translate('Advanced') }} :</strong>
+                            </td>
+                            <td>
+                                {{ single_price($order->advanced) }}
+                            </td>
+                        </tr>
+                        @endif
+                        <tr>
+                            <td>
+                                <strong class="text-muted">{{ translate('DUE') }} :</strong>
                             </td>
                             <td class="text-muted h5">
-                                {{ single_price($order->grand_total) }}
+                                {{ single_price($order->grand_total - $order->advanced - $order->discount) }}
                             </td>
                         </tr>
                     </tbody>
@@ -380,6 +418,33 @@
                 tracking_code: tracking_code
             }, function(data) {
                 AIZ.plugins.notify('success', '{{ translate('Order tracking code has been updated') }}');
+            });
+        });
+        $('#update_payment_method').on('change', function() {
+            var order_id = {{ $order->id }};
+            var payment_method = $('#update_payment_method').val();
+            $.get('{{ url()->current() }}', {
+                payment_method: payment_method
+            }, function(data) {
+                AIZ.plugins.notify('success', '{{ translate('Payment method has been updated') }}');
+            });
+        });
+        $('#update_discount').on('change', function() {
+            var discount = $('#update_discount').val();
+            $.get('{{ url()->current() }}', {
+                discount: discount
+            }, function(data) {
+                AIZ.plugins.notify('success', '{{ translate('Discount has been updated') }}');
+                window.location.reload();
+            });
+        });
+        $('#update_advanced').on('change', function() {
+            var advanced = $('#update_advanced').val();
+            $.get('{{ url()->current() }}', {
+                advanced: advanced
+            }, function(data) {
+                AIZ.plugins.notify('success', '{{ translate('Advanced has been updated') }}');
+                window.location.reload();
             });
         });
     </script>

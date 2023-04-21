@@ -51,9 +51,11 @@ class OrderController extends Controller
         CoreComponentRepository::instantiateShopRepository();
 
         $date = $request->date;
+        $shipping_date = $request->shipping_date;
         $sort_search = null;
         $delivery_status = null;
         $payment_status = '';
+        $payment_method = '';
 
         $orders = Order::orderBy('id', 'desc');
         $admin_user_id = User::where('user_type', 'admin')->first()->id;
@@ -101,12 +103,21 @@ class OrderController extends Controller
             $orders = $orders->where('delivery_status', $request->delivery_status);
             $delivery_status = $request->delivery_status;
         }
+        if ($request->payment_method != null) {
+            $orders = $orders->where('payment_method', $request->payment_method);
+            $payment_method = $request->payment_method;
+        }
         if ($date != null) {
             $orders = $orders->where('created_at', '>=', date('Y-m-d', strtotime(explode(" to ", $date)[0])) . '  00:00:00')
                 ->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])) . '  23:59:59');
         }
+        if ($shipping_date != null) {
+            $orders = $orders->where('booked_at', '>=', date('Y-m-d', strtotime(explode(" to ", $shipping_date)[0])) . '  00:00:00')
+                ->where('booked_at', '<=', date('Y-m-d', strtotime(explode(" to ", $shipping_date)[1])) . '  23:59:59');
+        }
+        $received_amount = $orders->sum('advanced');
         $orders = $orders->paginate(15);
-        return view('backend.sales.index', compact('orders', 'sort_search', 'payment_status', 'delivery_status', 'date'));
+        return view('backend.sales.index', compact('received_amount', 'orders', 'sort_search', 'payment_status', 'delivery_status', 'payment_method', 'date', 'shipping_date'));
     }
 
     public function show($id)
@@ -118,6 +129,15 @@ class OrderController extends Controller
             ->get();
 
         $order->viewed = 1;
+        if ($payment_method = request('payment_method')) {
+            $order->payment_method = $payment_method;
+        }
+        if ($discount = request('discount')) {
+            $order->discount = $discount;
+        }
+        if ($advanced = request('advanced')) {
+            $order->advanced = $advanced;
+        }
         $order->save();
         return view('backend.sales.show', compact('order', 'delivery_boys'));
     }
@@ -399,6 +419,10 @@ class OrderController extends Controller
         $order = Order::findOrFail($request->order_id);
         $order->delivery_viewed = '0';
         $order->delivery_status = $request->status;
+        // If status is shipping then set booked_at to current time
+        if ($request->status == 'shipping') {
+            $order->booked_at = now();
+        }
         $order->save();
 
         if ($request->status == 'cancelled' && $order->payment_type == 'wallet') {

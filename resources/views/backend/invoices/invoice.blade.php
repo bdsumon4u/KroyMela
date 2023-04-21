@@ -202,13 +202,27 @@
 							            <th class="gry-color text-left">{{ translate('Total Tax') }}</th>
 							            <td class="currency">{{ single_price($order->orderDetails->sum('tax')) }}</td>
 							        </tr>
+				                    @if($order->discount)
 				                    <tr class="border-bottom">
-							            <th class="gry-color text-left">{{ translate('Coupon Discount') }}</th>
+							            <th class="gry-color text-left">{{ translate('Discount') }}</th>
+							            <td class="currency">{{ single_price($order->discount) }}</td>
+							        </tr>
+									@endif
+									@if($order->coupon_discount)
+				                    <tr class="border-bottom">
+							            <th class="gry-color text-left">{{ translate('Coupon') }}</th>
 							            <td class="currency">{{ single_price($order->coupon_discount) }}</td>
 							        </tr>
+									@endif
+									@if($order->advanced)
+				                    <tr class="border-bottom">
+							            <th class="gry-color text-left">{{ translate('Advanced') }}</th>
+							            <td class="currency">{{ single_price($order->advanced) }}</td>
+							        </tr>
+									@endif
 							        <tr>
-							            <th class="text-left strong">{{ translate('Grand Total') }}</th>
-							            <td class="currency">{{ single_price($order->grand_total) }}</td>
+							            <th class="text-left strong">{{ translate('DUE') }}</th>
+							            <td class="currency">{{ single_price($order->grand_total - $order->discount - $order->advanced) }}</td>
 							        </tr>
 						        </tbody>
 						    </table>

@@ -20,32 +20,42 @@
                 </div>
             @endcan
 
-            <div class="col-lg-2 ml-auto">
+            <div class="col-lg-1 ml-auto">
                 <select class="form-control aiz-selectpicker" name="delivery_status" id="delivery_status">
-                    <option value="">{{translate('Filter by Delivery Status')}}</option>
-                    <option value="pending" @if ($delivery_status == 'pending') selected @endif>{{translate('Pending')}}</option>
-                    <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>{{translate('Confirmed')}}</option>
-                    <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>{{translate('Picked Up')}}</option>
-                    <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>{{translate('On The Way')}}</option>
-                    <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>{{translate('Delivered')}}</option>
-                    <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>{{translate('Cancel')}}</option>
+                    <option value="">{{translate('D. Status')}}</option>
+                    @foreach (config('order.statuses') as $status)
+                        <option value="{{ $status }}" @if ($delivery_status == $status) selected @endif>{{translate($status)}}</option>
+                    @endforeach
                 </select>
             </div>
-            <div class="col-lg-2 ml-auto">
+            <div class="col-lg-1 ml-auto">
                 <select class="form-control aiz-selectpicker" name="payment_status" id="payment_status">
-                    <option value="">{{translate('Filter by Payment Status')}}</option>
+                    <option value="">{{translate('P. Status')}}</option>
                     <option value="paid"  @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{translate('Paid')}}</option>
                     <option value="unpaid"  @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{translate('Un-Paid')}}</option>
                 </select>
-              </div>
+            </div>
+            <div class="col-lg-1 ml-auto">
+                <select class="form-control aiz-selectpicker" name="payment_method" id="payment_method">
+                    <option value="">{{translate('P. Method')}}</option>
+                    @foreach (config('order.payments') as $method)
+                        <option value="{{ $method }}" @if ($payment_method == $method) selected @endif>{{translate($method)}}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="col-lg-2">
                 <div class="form-group mb-0">
-                    <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Filter by date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
+                    <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Order Date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
                 </div>
             </div>
             <div class="col-lg-2">
                 <div class="form-group mb-0">
-                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type Order code & hit Enter') }}">
+                    <input type="text" class="aiz-date-range form-control" value="{{ $shipping_date }}" name="shipping_date" placeholder="{{ translate('Shipping Date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="form-group mb-0">
+                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Order Code') }}">
                 </div>
             </div>
             <div class="col-auto">
@@ -188,6 +198,9 @@
                 {{ $orders->appends(request()->input())->links() }}
             </div>
 
+        </div>
+        <div class="card-footer">
+            <div class="fs-16 text-center">Total received amount is <strong>{{ $received_amount }}</strong> taka in <strong>{{ $payment_method ?: 'all' }}</strong> payment method.</div>
         </div>
     </form>
 </div>
