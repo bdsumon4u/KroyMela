@@ -3,6 +3,8 @@
     <div class="nav aiz-nav-tabs">
         <a href="#tab_default_1" data-toggle="tab"
             class="mr-5 pb-2 fs-16 fw-700 text-reset active show">{{ translate('Description') }}</a>
+        <a href="#tab_dp" data-toggle="tab"
+            class="mr-5 pb-2 fs-16 fw-700 text-reset">{{ translate('Delivery & Payment') }}</a>
         @if ($detailedProduct->video_link != null)
             <a href="#tab_default_2" data-toggle="tab"
                 class="mr-5 pb-2 fs-16 fw-700 text-reset">{{ translate('Video') }}</a>
@@ -20,6 +22,15 @@
             <div class="py-5">
                 <div class="mw-100 overflow-hidden text-left aiz-editor-data">
                     <?php echo $detailedProduct->getTranslation('description'); ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- DP -->
+        <div class="tab-pane fade" id="tab_dp">
+            <div class="py-5">
+                <div class="mw-100 overflow-hidden text-left aiz-editor-data">
+                    {!! nl2br(get_setting('delivery_payment')) !!}
                 </div>
             </div>
         </div>

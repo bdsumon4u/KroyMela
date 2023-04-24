@@ -75,7 +75,7 @@
                     @endif
                     <li class="list-inline-item dropdown mr-2" id="lang-change">
                         <div class="d-flex align-items-center">
-                            <marquee class="text-white fw-800">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur facere quidem voluptas provident, incidunt eligendi dolore veritatis aperiam ipsum qui odit? Saepe illum, ad excepturi illo incidunt perspiciatis sequi quae dolores impedit inventore enim quibusdam doloribus, praesentium deleniti possimus distinctio officiis eligendi debitis magnam dolor. Recusandae dolorem molestias consequatur id!</marquee>
+                            <marquee class="text-white fw-800">{{ get_setting('topbar_scroll') }}</marquee>
                         </div>
                     </li>
                     <li class="list-inline-item mr-0 pl-0 py-2">

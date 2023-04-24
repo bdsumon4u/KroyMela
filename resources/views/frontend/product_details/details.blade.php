@@ -514,6 +514,12 @@
         @endif
     @endif
 
+    <div class="row no-gutters mt-4">
+        <div class="col">
+            {!! nl2br(get_setting('product_detail')) !!}
+        </div>
+    </div>
+
     <!-- Share -->
     <div class="row no-gutters mt-4">
         <div class="col-sm-2">

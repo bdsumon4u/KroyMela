@@ -76,6 +76,27 @@
                                 <div class="file-preview box sm"></div>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-from-label">{{translate('Topbar Scroll')}}</label>
+                            <div class="col-sm-9">
+                                <input type="hidden" name="types[]" value="topbar_scroll">
+                                <input type="text" name="topbar_scroll" class="form-control" value="{{ get_setting('topbar_scroll') }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-from-label">{{translate('Product Detail')}}</label>
+                            <div class="col-sm-9">
+                                <input type="hidden" name="types[]" value="product_detail">
+                                <textarea name="product_detail" class="form-control">{{ get_setting('product_detail') }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-from-label">{{translate('Delivery & Payment')}}</label>
+                            <div class="col-sm-9">
+                                <input type="hidden" name="types[]" value="delivery_payment">
+                                <textarea name="delivery_payment" class="form-control">{{ get_setting('delivery_payment') }}</textarea>
+                            </div>
+                        </div>
                         <div class="text-right">
     						<button type="submit" class="btn btn-primary">{{ translate('Update') }}</button>
     					</div>
