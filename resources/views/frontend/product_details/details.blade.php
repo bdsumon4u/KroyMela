@@ -514,8 +514,8 @@
         @endif
     @endif
 
-    <div class="row no-gutters mt-4">
-        <div class="col">
+    <div class="row no-gutters">
+        <div class="col font-bold fs-20">
             {!! nl2br(get_setting('product_detail')) !!}
         </div>
     </div>
