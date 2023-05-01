@@ -71,11 +71,11 @@
                 @include('frontend.product_details.description')
                 
                 <!-- Product Query -->
-                @include('frontend.product_details.product_queries')
+                {{-- @include('frontend.product_details.product_queries') --}}
             @else
                 <div class="row gutters-16">
                     <!-- Left side -->
-                    <div class="col-lg-3">
+                    {{-- <div class="col-lg-3">
                         <!-- Seller Info -->
                         @include('frontend.product_details.seller_info')
 
@@ -83,10 +83,10 @@
                        <div class="d-none d-lg-block">
                             @include('frontend.product_details.top_selling_products')
                        </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Right side -->
-                    <div class="col-lg-9">
+                    <div class="col">
                         <!-- Description, Video, Downloads -->
                         @include('frontend.product_details.description')
                         
@@ -94,12 +94,12 @@
                         @include('frontend.product_details.related_products')
 
                         <!-- Product Query -->
-                        @include('frontend.product_details.product_queries')
+                        {{-- @include('frontend.product_details.product_queries') --}}
                         
                         <!-- Top Selling Products -->
-                        <div class="d-lg-none">
+                        {{-- <div class="d-lg-none">
                              @include('frontend.product_details.top_selling_products')
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
