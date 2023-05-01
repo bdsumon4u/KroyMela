@@ -373,7 +373,7 @@
             @endif
             
             <!-- Total Price -->
-            <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
+            <div class="row no-gutters pb-3" id="chosen_price_div" style="display: none;">
                 <div class="col-sm-2">
                     <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Total Price') }}</div>
                 </div>
