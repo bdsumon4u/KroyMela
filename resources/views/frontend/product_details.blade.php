@@ -87,10 +87,6 @@
 
                     <!-- Right side -->
                     <div class="col-lg-9">
-                        
-                        <!-- Reviews & Ratings -->
-                        @include('frontend.product_details.review_section')
-
                         <!-- Description, Video, Downloads -->
                         @include('frontend.product_details.description')
                         
