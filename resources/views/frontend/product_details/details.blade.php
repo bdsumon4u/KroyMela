@@ -33,7 +33,7 @@
             </div>
         @endif
     </div>
-    <div class="row align-items-center">
+    <div class="row align-items-center d-none">
         <!-- Ask about this product -->
         <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 mb-3">
             <a href="javascript:void();" onclick="goToView('product_query')" class="text-primary fs-14 fw-600 d-flex">
@@ -78,7 +78,7 @@
     @endif
     
     <!-- Seller Info -->
-    <div class="d-flex flex-wrap align-items-center">
+    <div class="d-none flex-wrap align-items-center">
         <div class="d-flex align-items-center mr-4">
             <!-- Shop Name -->
             @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1)
@@ -113,7 +113,7 @@
 
     <!-- For auction product -->
     @if ($detailedProduct->auction_product)
-        <div class="row no-gutters mb-3">
+        <div class="row no-gutters mb-2">
             <div class="col-sm-2">
                 <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Auction Will End')}}</div>
             </div>
@@ -127,7 +127,7 @@
             </div>
         </div>
 
-        <div class="row no-gutters mb-3">
+        <div class="row no-gutters mb-2">
             <div class="col-sm-2">
                 <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Starting Bid')}}</div>
             </div>
@@ -135,14 +135,14 @@
                 <span class="opacity-50 fs-20">
                     {{ single_price($detailedProduct->starting_bid) }}
                 </span>
-                @if($detailedProduct->unit != null)
+                @if(false && $detailedProduct->unit != null)
                     <span class="opacity-70">/{{ $detailedProduct->getTranslation('unit') }}</span>
                 @endif
             </div>
         </div>
 
         @if(Auth::check() && Auth::user()->product_bids->where('product_id',$detailedProduct->id)->first() != null)
-            <div class="row no-gutters mb-3">
+            <div class="row no-gutters mb-2">
                 <div class="col-sm-2">
                     <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('My Bidded Amount')}}</div>
                 </div>
@@ -193,7 +193,7 @@
         @else
         <!-- Without Wholesale -->
             @if (home_price($detailedProduct) != home_discounted_price($detailedProduct))
-                <div class="row no-gutters mb-3">
+                <div class="row no-gutters mb-2">
                     <div class="col-sm-2">
                         <div class="text-secondary fs-14 fw-400">{{ translate('Price')}}</div>
                     </div>
@@ -208,7 +208,7 @@
                                 {{ home_price($detailedProduct) }}
                             </del>
                             <!-- Unit -->
-                            @if($detailedProduct->unit != null)
+                            @if(false && $detailedProduct->unit != null)
                                 <span class="opacity-70 ml-1">/{{ $detailedProduct->getTranslation('unit') }}</span>
                             @endif
                             <!-- Discount percentage -->
@@ -235,18 +235,18 @@
                     </div>
                 </div>
             @else
-                <div class="row no-gutters mb-3">
-                    <div class="col-sm-2">
+                <div class="row no-gutters mb-2">
+                    <div class="col-2">
                         <div class="text-secondary fs-14 fw-400">{{ translate('Price') }}</div>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-10">
                         <div class="d-flex align-items-center">
                             <!-- Discount Price -->
                             <strong class="fs-16 fw-700 text-primary">
                                 {{ home_discounted_price($detailedProduct) }}
                             </strong>
                             <!-- Unit -->
-                            @if ($detailedProduct->unit != null)
+                            @if (false && $detailedProduct->unit != null)
                                 <span class="opacity-70">/{{ $detailedProduct->getTranslation('unit') }}</span>
                             @endif
                             <!-- Club Point -->
@@ -281,7 +281,7 @@
                 <!-- Choice Options -->
                 @if ($detailedProduct->choice_options != null)
                     @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
-                        <div class="row no-gutters mb-3">
+                        <div class="row no-gutters mb-2">
                             <div class="col-sm-2">
                                 <div class="text-secondary fs-14 fw-400 mt-2 ">
                                     {{ \App\Models\Attribute::find($choice->attribute_id)->getTranslation('name') }}
@@ -310,7 +310,7 @@
 
                 <!-- Color Options -->
                 @if (count(json_decode($detailedProduct->colors)) > 0)
-                    <div class="row no-gutters mb-3">
+                    <div class="row no-gutters mb-2">
                         <div class="col-sm-2">
                             <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Color')}}</div>
                         </div>
@@ -335,7 +335,7 @@
                 @endif
 
                 <!-- Quantity + Add to cart -->
-                <div class="row no-gutters mb-3">
+                <div class="row no-gutters mb-2">
                     <div class="col-sm-2">
                         <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Quantity')}}</div>
                     </div>
