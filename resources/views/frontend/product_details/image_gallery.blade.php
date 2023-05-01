@@ -5,7 +5,7 @@
         @endphp
         <!-- Gallery Images -->
         <div class="col-12">
-            <div class="aiz-carousel product-gallery arrow-inactive-transparent arrow-lg-none" data-nav-for='.product-gallery-thumb' data-fade='true' data-auto-height='true'  data-arrows='true'>
+            <div class="aiz-carousel product-gallery arrow-inactive-transparent -arrow-lg-none" data-nav-for='.product-gallery-thumb' data-fade='true' data-auto-height='true'  data-arrows='true'>
 
                 @foreach ($photos as $key => $photo)
                     <div class="carousel-box img-zoom rounded-0">
@@ -32,7 +32,7 @@
             </div>
         </div>
         <!-- Thumbnail Images -->
-        <div class="col-12 mt-3 d-none d-lg-block">
+        <div class="col-12 mt-3 -d-none d-lg-block">
             <div class="aiz-carousel product-gallery-thumb" data-items='7' data-nav-for='.product-gallery' data-focus-select='true' data-arrows='true' data-vertical='false' data-auto-height='true'>
 
                 @foreach ($photos as $key => $photo)
