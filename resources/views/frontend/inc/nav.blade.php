@@ -106,7 +106,7 @@
     <!-- Search Bar -->
     <div class="position-relative logo-bar-area border-bottom border-primary border-md-nonea z-1025">
         <div class="container">
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center justify-content-between">
                 <!-- top menu sidebar button -->
                 <button type="button" class="btn d-lg-none mr-3 mr-sm-4 p-0 active" data-toggle="class-toggle" data-target=".aiz-top-menu-sidebar">
                     <svg id="Component_43_1" data-name="Component 43 – 1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -130,7 +130,7 @@
                     </a>
                 </div>
                 <!-- Search Icon for small device -->
-                <div class="d-lg-none ml-auto mr-0">
+                <div class="d-lg-none -ml-auto mr-0">
                     <a class="p-2 d-block text-white" href="javascript:void(0);" data-toggle="class-toggle" data-target=".front-header-search">
                         <i class="las la-search la-flip-horizontal la-2x"></i>
                     </a>
