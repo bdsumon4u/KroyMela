@@ -83,8 +83,12 @@
                         </div>
                     </li>
                     <li class="list-inline-item mr-0 pl-0 py-2">
-                        <a href="{{ route('orders.track') }}" class="-dropdown-toggle text-white fs-12">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" height="20" width="20"><path d="M8 4H21V6H8V4ZM5 3V6H6V7H3V6H4V4H3V3H5ZM3 14V11.5H5V11H3V10H6V12.5H4V13H6V14H3ZM5 19.5H3V18.5H5V18H3V17H6V21H3V20H5V19.5ZM8 11H21V13H8V11ZM8 18H21V20H8V18Z"></path></svg>
+                        <a class="text-white fs-12" href="#" role="button" id="topBarDropdownMenu">
+                            <svg id="Component_43_1" data-name="Component 43 – 1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <rect id="Rectangle_19062" data-name="Rectangle 19062" width="16" height="2" transform="translate(0 7)" fill="#fff"></rect>
+                                <rect id="Rectangle_19063" data-name="Rectangle 19063" width="16" height="2" fill="#fff"></rect>
+                                <rect id="Rectangle_19064" data-name="Rectangle 19064" width="16" height="2" transform="translate(0 14)" fill="#fff"></rect>
+                            </svg>
                         </a>
                     </li>
                     {{-- @if (get_setting('helpline_number'))
@@ -101,7 +105,30 @@
         </div>
     </div>
 </div>
-
+<div class="topBarDropdownMenu bg-dark w-100" style="display: none; z-index: 9999;">
+    <div class="container">
+        <a class="d-block py-1 px-3 text-white" href="{{ route('terms') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M5 8V20H19V8H5ZM5 6H19V4H5V6ZM20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22ZM7 10H11V14H7V10ZM7 16H17V18H7V16ZM13 11H17V13H13V11Z"></path></svg>
+            <span class="ml-2">{{ translate('Terms & conditions') }}</span>
+        </a>
+        <a class="d-block py-1 px-3 text-white" href="{{ route('returnpolicy') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19.0003 10.0003L19.0004 19.0002L17.0004 19.0002L17.0003 12.0003L6.82845 12.0002L10.7782 15.9499L9.36396 17.3642L3 11.0002L9.36396 4.63623L10.7782 6.05044L6.8284 10.0002L19.0003 10.0003Z"></path></svg>
+            <span class="ml-2">{{ translate('Return Policy') }}</span>
+        </a>
+        <a class="d-block py-1 px-3 text-white" href="{{ route('privacypolicy') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path></svg>
+            <span class="ml-2">{{ translate('Privacy Policy') }}</span>
+        </a>
+        <a class="d-block py-1 px-3 text-white" href="{{ route('orders.track') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path></svg>
+            <span class="ml-2">{{ translate('Track Order') }}</span>
+        </a>
+        <a class="d-block py-1 px-3 text-white" href="{{ route('supportpolicy') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M5.76282 17H20V5H4V18.3851L5.76282 17ZM6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM11 14H13V16H11V14ZM8.56731 8.81346C8.88637 7.20919 10.302 6 12 6C13.933 6 15.5 7.567 15.5 9.5C15.5 11.433 13.933 13 12 13H11V11H12C12.8284 11 13.5 10.3284 13.5 9.5C13.5 8.67157 12.8284 8 12 8C11.2723 8 10.6656 8.51823 10.5288 9.20577L8.56731 8.81346Z"></path></svg>
+            <span class="ml-2">{{ translate('Support') }}</span>
+        </a>
+    </div>
+</div>
 <header class="@if(get_setting('header_stikcy') == 'on') sticky-top @endif z-1020" style="background-color: #0083C4;">
     <!-- Search Bar -->
     <div class="position-relative logo-bar-area border-bottom border-primary border-md-nonea z-1025">

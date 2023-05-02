@@ -319,6 +319,16 @@
 
     <script>
         $(document).ready(function() {
+            $('#topBarDropdownMenu').click(function (ev) {
+                var topBarDropdownMenu = $('.topBarDropdownMenu');
+
+                if (topBarDropdownMenu.css('display') === 'none') {
+                    topBarDropdownMenu.slideDown();
+                } else {
+                    topBarDropdownMenu.slideUp();
+                }
+            });
+
             $('.category-nav-element').each(function(i, el) {
                 $(el).on('mouseover', function(){
                     if(!$(el).find('.sub-cat-menu').hasClass('loaded')){
