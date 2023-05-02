@@ -40,7 +40,7 @@
                     <th data-breakpoints="lg">{{ translate('Start Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('End Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('Status') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Featured') }}</th>
+                    <th data-breakpoints="lg">{{ translate('HOT') }}</th>
                     <th data-breakpoints="lg">{{ translate('Page Link') }}</th>
                     <th class="text-right">{{translate('Options')}}</th>
                 </tr>

@@ -59,7 +59,7 @@ class FlashDealController extends Controller
         $flash_deal->title = $request->title;
         $flash_deal->text_color = $request->text_color;
 
-        $date_var               = explode(" to ", $request->date_range);
+        $date_var               = explode(" to ", $request->date_range ?? now()->toDateTimeString().' to '.now()->addYear()->toDateTimeString());
         $flash_deal->start_date = strtotime($date_var[0]);
         $flash_deal->end_date   = strtotime( $date_var[1]);
 
@@ -132,7 +132,7 @@ class FlashDealController extends Controller
 
         $flash_deal->text_color = $request->text_color;
 
-        $date_var               = explode(" to ", $request->date_range);
+        $date_var               = explode(" to ", $request->date_range ?? now()->toDateTimeString().' to '.now()->addYear()->toDateTimeString());
         $flash_deal->start_date = strtotime($date_var[0]);
         $flash_deal->end_date   = strtotime( $date_var[1]);
 

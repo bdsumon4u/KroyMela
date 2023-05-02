@@ -49,7 +49,7 @@
     @foreach ($flash_deals as $flash_deal)
         @if($flash_deal != null && strtotime(date('Y-m-d H:i:s')) >= $flash_deal->start_date && strtotime(date('Y-m-d H:i:s')) <= $flash_deal->end_date)
         <section class="mb-2 mb-md-3 mt-2 mt-md-3">
-            <div class="container">
+            <div class="container" style="background-color: {{$flash_deal->background_color ?? ($flash_deal->featured ? '#ffefcf' : '')}}">
                 <!-- Top Section -->
                 <div class="d-flex flex-wrap mb-2 mb-md-3 align-items-baseline justify-content-between">
                     <!-- Title -->

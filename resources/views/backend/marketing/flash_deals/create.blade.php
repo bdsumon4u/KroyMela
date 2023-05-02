@@ -20,13 +20,13 @@
                     <div class="form-group row">
                         <label class="col-sm-3 control-label" for="background_color">{{translate('Background Color')}} <small>({{ translate('Hexa-code') }})</small></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('#FFFFFF')}}" id="background_color" name="background_color" class="form-control" required>
+                            <input type="text" placeholder="{{translate('#FFFFFF')}}" id="background_color" name="background_color" class="form-control">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row d-none">
                         <label class="col-lg-3 control-label" for="name">{{translate('Text Color')}}</label>
                         <div class="col-lg-9">
-                            <select name="text_color" id="text_color" class="form-control aiz-selectpicker" required>
+                            <select name="text_color" id="text_color" class="form-control aiz-selectpicker">
                                 <option value="">{{translate('Select One')}}</option>
                                 <option value="white">{{translate('White')}}</option>
                                 <option value="dark">{{translate('Dark')}}</option>
@@ -51,7 +51,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 control-label" for="start_date">{{translate('Date')}}</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control aiz-date-range" name="date_range" placeholder="{{ translate('Select Date') }}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off" required>
+                          <input type="text" class="form-control aiz-date-range" name="date_range" placeholder="{{ translate('Select Date') }}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
                         </div>
                     </div>
 

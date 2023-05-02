@@ -34,13 +34,13 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="background_color">{{translate('Background Color')}}<small>({{ translate('Hexa-code') }})</small></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('#0000ff')}}" id="background_color" name="background_color" value="{{ $flash_deal->background_color }}" class="form-control" required>
+                            <input type="text" placeholder="{{translate('#0000ff')}}" id="background_color" name="background_color" value="{{ $flash_deal->background_color }}" class="form-control">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row d-none">
                         <label class="col-lg-3 col-from-label" for="text_color">{{translate('Text Color')}}</label>
                         <div class="col-lg-9">
-                            <select name="text_color" id="text_color" class="form-control demo-select2" required>
+                            <select name="text_color" id="text_color" class="form-control demo-select2">
                                 <option value="">Select One</option>
                                 <option value="white" @if ($flash_deal->text_color == 'white') selected @endif>{{translate('White')}}</option>
                                 <option value="dark" @if ($flash_deal->text_color == 'dark') selected @endif>{{translate('Dark')}}</option>
@@ -70,7 +70,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="start_date">{{translate('Date')}}</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control aiz-date-range" value="{{ $start_date.' to '.$end_date }}" name="date_range" placeholder="{{ translate('Select Date') }}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off" required>
+                          <input type="text" class="form-control aiz-date-range" value="{{ $start_date.' to '.$end_date }}" name="date_range" placeholder="{{ translate('Select Date') }}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
                         </div>
                     </div>
 
