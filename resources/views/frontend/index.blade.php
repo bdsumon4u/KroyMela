@@ -14,7 +14,7 @@
                                 <div class="carousel-box">
                                     <a href="{{ json_decode(get_setting('home_slider_links'), true)[$key] }}">
                                         <!-- Image -->
-                                        <img class="d-block mw-100 img-fit overflow-hidden h-sm-auto h-md-320px h-lg-460px overflow-hidden"
+                                        <img class="d-block mw-100 img-fit overflow-hidden h-sm-auto h-md-220px h-lg-360px overflow-hidden"
                                             src="{{ uploaded_asset($slider_images[$key]) }}"
                                             alt="{{ env('APP_NAME')}} promo"
                                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
