@@ -75,7 +75,7 @@
                                 <del class="fs-14 opacity-60 ml-2">
                                     {{ home_price($product) }}
                                 </del>
-                                @if($product->unit != null)
+                                @if(false && $product->unit != null)
                                     <span class="opacity-70 ml-1">/{{ $product->getTranslation('unit') }}</span>
                                 @endif
                                 @if(discount_in_percentage($product) > 0)
@@ -111,7 +111,7 @@
                                 <strong class="fs-16 fw-700 text-primary">
                                     {{ home_discounted_price($product) }}
                                 </strong>
-                                @if ($product->unit != null)
+                                @if (false && $product->unit != null)
                                     <span class="opacity-70">/{{ $product->unit }}</span>
                                 @endif
                             </div>
@@ -217,7 +217,7 @@
                     @endif
                     
                     <!-- Total Price -->
-                    <div class="row no-gutters mt-3 pb-3 d-none" id="chosen_price_div">
+                    <div class="row no-gutters mt-3 pb-3 d-none" id="chosen_price_div" style="display: none;">
                         <div class="col-3">
                             <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Total Price')}}</div>
                         </div>
