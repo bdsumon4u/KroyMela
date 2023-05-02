@@ -235,9 +235,9 @@
                 <!-- Add to cart -->
                 <div class="mt-3">
                     @if ($product->digital == 1)
-                        <button type="button" class="btn btn-primary rounded-0 buy-now fw-600 add-to-cart" onclick="addToCart()">
+                        <button type="button" class="btn btn-primary rounded-0 buy-now fw-600 add-to-cart" onclick="buyNow()">
                             <i class="la la-shopping-cart"></i>
-                            <span class="d-none d-md-inline-block">{{ translate('Add to cart')}}</span>
+                            <span class="d-none d-md-inline-block">{{ translate('Buy Now')}}</span>
                         </button>
                     @elseif($qty > 0)
                         @if ($product->external_link != null)
@@ -246,9 +246,9 @@
                                 <span class="d-none d-md-inline-block">{{ translate($product->external_link_btn)}}</span>
                             </a>
                         @else
-                            <button type="button" class="btn btn-primary rounded-0 buy-now fw-600 add-to-cart" onclick="addToCart()">
+                            <button type="button" class="btn btn-primary rounded-0 buy-now fw-600 add-to-cart" onclick="buyNow()">
                                 <i class="la la-shopping-cart"></i>
-                                <span class="d-none d-md-inline-block">{{ translate('Add to cart')}}</span>
+                                <span class="d-none d-md-inline-block">{{ translate('Buy Now')}}</span>
                             </button>
                         @endif
                     @endif
