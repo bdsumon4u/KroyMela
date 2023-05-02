@@ -81,7 +81,7 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('show_in_house_products')
+                            {{-- @can('show_in_house_products')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('products.admin')}}" class="aiz-side-nav-link {{ areActiveRoutes(['products.admin', 'products.create', 'products.admin.edit']) }}" >
                                         <span class="aiz-side-nav-text">{{ translate('In House Products') }}</span>
@@ -117,7 +117,7 @@
                                         <span class="aiz-side-nav-text">{{translate('Bulk Export')}}</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endcan --}}
                             @can('view_product_categories')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('categories.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['categories.index', 'categories.create', 'categories.edit'])}}">
@@ -258,15 +258,15 @@
                 @endif
 
                 <!-- Sale -->
-                @canany(['view_all_orders', 'view_inhouse_orders','view_seller_orders','view_pickup_point_orders'])
+                {{-- @canany(['view_all_orders', 'view_inhouse_orders','view_seller_orders','view_pickup_point_orders']) --}}
                     <li class="aiz-side-nav-item">
-                        <a href="#" class="aiz-side-nav-link">
+                        <a href="{{ route('all_orders.index') }}" class="aiz-side-nav-link">
                             <i class="las la-money-bill aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{translate('Sales')}}</span>
-                            <span class="aiz-side-nav-arrow"></span>
+                            {{-- <span class="aiz-side-nav-arrow"></span> --}}
                         </a>
                         <!--Submenu-->
-                        <ul class="aiz-side-nav-list level-2">
+                        {{-- <ul class="aiz-side-nav-list level-2">
                             @can('view_all_orders')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('all_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.index', 'all_orders.show'])}}">
@@ -297,9 +297,9 @@
                                     </a>
                                 </li>
                             @endcan
-                        </ul>
+                        </ul> --}}
                     </li>
-                @endcanany
+                {{-- @endcanany --}}
 
                 <!-- Deliver Boy Addon-->
                 @if (addon_is_activated('delivery_boy'))
@@ -444,7 +444,7 @@
                 @endcanany
 
                 <!-- Sellers -->
-                @canany(['view_all_seller','seller_payment_history','view_seller_payout_requests','seller_commission_configuration','view_all_seller_packages','seller_verification_form_configuration'])
+                {{-- @canany(['view_all_seller','seller_payment_history','view_seller_payout_requests','seller_commission_configuration','view_all_seller_packages','seller_verification_form_configuration'])
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-user aiz-side-nav-icon"></i>
@@ -505,7 +505,7 @@
                             @endcan
                         </ul>
                     </li>
-                @endcanany
+                @endcanany --}}
 
                 {{-- Uploads Files --}}
                 <li class="aiz-side-nav-item">
@@ -531,13 +531,13 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('seller_products_sale_report')
+                            {{-- @can('seller_products_sale_report')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('seller_sale_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_sale_report.index'])}}">
                                         <span class="aiz-side-nav-text">{{ translate('Seller Products Sale') }}</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endcan --}}
                             @can('products_stock_report')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('stock_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['stock_report.index'])}}">
@@ -545,13 +545,13 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('product_wishlist_report')
+                            {{-- @can('product_wishlist_report')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('wish_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wish_report.index'])}}">
                                         <span class="aiz-side-nav-text">{{ translate('Products wishlist') }}</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endcan --}}
                             @can('user_search_report')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('user_search_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_search_report.index'])}}">
@@ -559,7 +559,7 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('commission_history_report')
+                            {{-- @can('commission_history_report')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">
                                         <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>
@@ -572,13 +572,13 @@
                                         <span class="aiz-side-nav-text">{{ translate('Wallet Recharge History') }}</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endcan --}}
                         </ul>
                     </li>
                 @endcanany
                 
                 <!--Blog System-->
-                @canany(['view_blogs','view_blog_categories'])
+                {{-- @canany(['view_blogs','view_blog_categories'])
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-bullhorn aiz-side-nav-icon"></i>
@@ -602,7 +602,7 @@
                             @endcan
                         </ul>
                     </li>
-                @endcanany
+                @endcanany --}}
 
                 <!-- marketing -->
                 @canany(['view_all_flash_deals','send_newsletter','send_bulk_sms','view_all_subscribers','view_all_coupons'])
@@ -656,7 +656,7 @@
                 @endcanany
 
                 <!-- Support -->
-                @canany(['view_all_support_tickets','view_all_product_conversations','view_all_product_queries'])
+                {{-- @canany(['view_all_support_tickets','view_all_product_conversations','view_all_product_queries'])
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-link aiz-side-nav-icon"></i>
@@ -704,7 +704,7 @@
                             @endif
                         </ul>
                     </li>
-                @endcanany
+                @endcanany --}}
 
                 <!-- Affiliate Addon -->
                 @if (addon_is_activated('affiliate_system'))
@@ -1006,13 +1006,13 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('features_activation')
+                            {{-- @can('features_activation')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('activation.index')}}" class="aiz-side-nav-link">
                                         <span class="aiz-side-nav-text">{{translate('Features activation')}}</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endcan --}}
                             @can('language_setup')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('languages.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['languages.index', 'languages.create', 'languages.store', 'languages.show', 'languages.edit'])}}">
@@ -1020,7 +1020,7 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('currency_setup')
+                            {{-- @can('currency_setup')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('currency.index')}}" class="aiz-side-nav-link">
                                         <span class="aiz-side-nav-text">{{translate('Currency')}}</span>
@@ -1040,7 +1040,7 @@
                                         <span class="aiz-side-nav-text">{{translate('Pickup point')}}</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endcan --}}
                             @can('smtp_settings')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('smtp_settings.index') }}" class="aiz-side-nav-link">
@@ -1048,7 +1048,7 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('payment_methods_configurations')
+                            {{-- @can('payment_methods_configurations')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('payment_method.index') }}" class="aiz-side-nav-link">
                                         <span class="aiz-side-nav-text">{{translate('Payment Methods')}}</span>
@@ -1061,7 +1061,7 @@
                                         <span class="aiz-side-nav-text">{{translate('Order Configuration')}}</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endcan --}}
                             @can('file_system_&_cache_configuration')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('file_system.index') }}" class="aiz-side-nav-link">
@@ -1069,14 +1069,14 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('social_media_logins')
+                            {{-- @can('social_media_logins')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('social_login.index') }}" class="aiz-side-nav-link">
                                         <span class="aiz-side-nav-text">{{translate('Social media Logins')}}</span>
                                     </a>
                                 </li>
-                            @endcan
-                            @canany(['facebook_chat','facebook_comment'])
+                            @endcan --}}
+                            {{-- @canany(['facebook_chat','facebook_comment'])
                                 <li class="aiz-side-nav-item">
                                     <a href="javascript:void(0);" class="aiz-side-nav-link">
                                         <span class="aiz-side-nav-text">{{translate('Facebook')}}</span>
@@ -1099,7 +1099,7 @@
                                         @endcan
                                     </ul>
                                 </li>
-                            @endcanany
+                            @endcanany --}}
                             @canany(['analytics_tools_configuration','google_recaptcha_configuration','google_map_setting','google_firebase_setting'])
                                 <li class="aiz-side-nav-item">
                                     <a href="javascript:void(0);" class="aiz-side-nav-link">
@@ -1114,7 +1114,7 @@
                                                 </a>
                                             </li>
                                         @endcan
-                                        @can('google_recaptcha_configuration')
+                                        {{-- @can('google_recaptcha_configuration')
                                             <li class="aiz-side-nav-item">
                                                 <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">
                                                     <span class="aiz-side-nav-text">{{translate('Google reCAPTCHA')}}</span>
@@ -1134,7 +1134,7 @@
                                                     <span class="aiz-side-nav-text">{{translate('Google Firebase')}}</span>
                                                 </a>
                                             </li>
-                                        @endcan
+                                        @endcan --}}
                                     </ul>
                                 </li>
                             @endcanany
@@ -1152,7 +1152,7 @@
                                                 </a>
                                             </li>
                                         @endcan
-                                        @can('shipping_country_setting')
+                                        {{-- @can('shipping_country_setting')
                                             <li class="aiz-side-nav-item">
                                                 <a href="{{route('countries.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['countries.index','countries.edit','countries.update'])}}">
                                                     <span class="aiz-side-nav-text">{{translate('Shipping Countries')}}</span>
@@ -1165,7 +1165,7 @@
                                                     <span class="aiz-side-nav-text">{{translate('Shipping States')}}</span>
                                                 </a>
                                             </li>
-                                        @endcan
+                                        @endcan --}}
                                         @can('manage_shipping_cities')
                                             <li class="aiz-side-nav-item">
                                                 <a href="{{route('cities.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['cities.index','cities.edit','cities.update'])}}">
@@ -1173,7 +1173,7 @@
                                                 </a>
                                             </li>
                                         @endcan
-                                        @can('manage_zones')
+                                        {{-- @can('manage_zones')
                                             <li class="aiz-side-nav-item">
                                                 <a href="{{route('zones.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['zones.index','zones.create','zones.edit'])}}">
                                                     <span class="aiz-side-nav-text">{{translate('Shipping Zones')}}</span>
@@ -1186,7 +1186,7 @@
                                                     <span class="aiz-side-nav-text">{{translate('Shipping Carrier')}}</span>
                                                 </a>
                                             </li>
-                                        @endcan
+                                        @endcan --}}
                                     </ul>
                                 </li>
                             @endif
@@ -1222,7 +1222,7 @@
                 @endcanany
 
                 {{-- System Update & Server Status --}}
-                @canany(['system_update','server_status'])
+                {{-- @canany(['system_update','server_status'])
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-user-tie aiz-side-nav-icon"></i>
@@ -1246,17 +1246,17 @@
                             @endcan
                         </ul>
                     </li>
-                @endcanany
+                @endcanany --}}
 
                 <!-- Addon Manager -->
-                @can('manage_addons')
+                {{-- @can('manage_addons')
                     <li class="aiz-side-nav-item">
                         <a href="{{route('addons.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['addons.index', 'addons.create'])}}">
                             <i class="las la-wrench aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{translate('Addon Manager')}}</span>
                         </a>
                     </li>
-                @endcan
+                @endcan --}}
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->
     </div><!-- .aiz-sidebar -->
