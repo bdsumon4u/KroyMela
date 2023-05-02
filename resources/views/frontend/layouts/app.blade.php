@@ -157,6 +157,9 @@
         .cart-btn {
             transform: translateY(0);
         }
+        .carousel-box.img-zoom {
+            min-height: 250px;
+        }
     </style>
 
 @if (get_setting('google_analytics') == 1)
