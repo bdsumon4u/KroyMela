@@ -56,6 +56,7 @@ class OrderController extends Controller
         $delivery_status = null;
         $payment_status = '';
         $payment_method = '';
+        $courier = '';
 
         $orders = Order::orderBy('id', 'desc');
         $admin_user_id = User::where('user_type', 'admin')->first()->id;
@@ -107,6 +108,10 @@ class OrderController extends Controller
             $orders = $orders->where('payment_method', $request->payment_method);
             $payment_method = $request->payment_method;
         }
+        if ($request->courier != null) {
+            $orders = $orders->where('courier', $request->courier);
+            $courier = $request->courier;
+        }
         if ($date != null) {
             $orders = $orders->where('created_at', '>=', date('Y-m-d', strtotime(explode(" to ", $date)[0])) . '  00:00:00')
                 ->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])) . '  23:59:59');
@@ -117,7 +122,7 @@ class OrderController extends Controller
         }
         $received_amount = $orders->sum('advanced');
         $orders = $orders->paginate(15);
-        return view('backend.sales.index', compact('received_amount', 'orders', 'sort_search', 'payment_status', 'delivery_status', 'payment_method', 'date', 'shipping_date'));
+        return view('backend.sales.index', compact('received_amount', 'orders', 'sort_search', 'payment_status', 'delivery_status', 'payment_method', 'courier', 'date', 'shipping_date'));
     }
 
     public function show($id)
@@ -137,6 +142,9 @@ class OrderController extends Controller
         }
         if ($advanced = request('advanced')) {
             $order->advanced = $advanced;
+        }
+        if ($courier = request('courier')) {
+            $order->courier = $courier;
         }
         $order->save();
         return view('backend.sales.show', compact('order', 'delivery_boys'));

@@ -7,7 +7,7 @@
             <h1 class="h2 fs-16 mb-0">{{ translate('Order Details') }}</h1>
         </div>
         <div class="card-body">
-            <div class="row gutters-5">
+            <div class="row gutters-5 mb-2">
                 <div class="col text-md-left text-center">
                 </div>
                 @php
@@ -76,8 +76,6 @@
                         <input type="text" class="form-control" id="update_advanced"
                             value="{{ $order->advanced }}">
                     </div>
-                    <div class="col-md-3">
-                    </div>
                     <div class="col-md-3 ml-auto">
                         <label for="update_delivery_status">{{ translate('Delivery Status') }}</label>
                         @if (auth()->user()->can('update_order_delivery_status') && $order->delivery_status != 'delivered' && $order->delivery_status != 'cancelled')
@@ -91,6 +89,22 @@
                             </select>
                         @else
                             <input type="text" class="form-control" value="{{ $order->delivery_status }}" disabled>
+                        @endif
+                    </div>
+                    <div class="col-md-3 ml-auto">
+                        <label for="update_courier">{{ translate('Courier') }}</label>
+                        @if (auth()->user()->can('update_order_courier') && $order->delivery_status != 'delivered' && $order->courier != 'cancelled')
+                            <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
+                                id="update_courier">
+                                <option value="">{{ translate('Select Courier') }}</option>
+                                @foreach (config('order.couriers') as $courier)
+                                    <option value="{{ $courier }}" @if ($order->courier == $courier) selected @endif>
+                                        {{ translate($courier) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            <input type="text" class="form-control" value="{{ $order->courier }}" disabled>
                         @endif
                     </div>
                     <div class="col-md-3 ml-auto">
@@ -427,6 +441,15 @@
                 payment_method: payment_method
             }, function(data) {
                 AIZ.plugins.notify('success', '{{ translate('Payment method has been updated') }}');
+            });
+        });
+        $('#update_courier').on('change', function() {
+            var order_id = {{ $order->id }};
+            var courier = $('#update_courier').val();
+            $.get('{{ url()->current() }}', {
+                courier: courier
+            }, function(data) {
+                AIZ.plugins.notify('success', '{{ translate('Courier has been updated') }}');
             });
         });
         $('#update_discount').on('change', function() {

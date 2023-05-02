@@ -5,60 +5,67 @@
 <div class="card">
     <form class="" action="" id="sort_orders" method="GET">
         <div class="card-header row gutters-5">
-            <div class="col">
-                <h5 class="mb-md-0 h6">{{ translate('All Orders') }}</h5>
-            </div>
-
-            @can('delete_order')
-                <div class="dropdown mb-2 mb-md-0">
-                    <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
-                        {{translate('Bulk Action')}}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{translate('Delete selection')}}</a>
+            <div class="col-sm-10 col-md-11">
+                <div class="row">
+                    <div class="col-md-3">
+                        <select class="form-control aiz-selectpicker" name="courier" id="courier">
+                            <option value="">{{translate('Courier')}}</option>
+                            @foreach (config('order.couriers') as $name)
+                                <option value="{{ $name }}" @if ($name == $courier) selected @endif>{{translate($name)}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control aiz-selectpicker" name="delivery_status" id="delivery_status">
+                            <option value="">{{translate('D. Status')}}</option>
+                            @foreach (config('order.statuses') as $status)
+                                <option value="{{ $status }}" @if ($delivery_status == $status) selected @endif>{{translate($status)}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control aiz-selectpicker" name="payment_status" id="payment_status">
+                            <option value="">{{translate('P. Status')}}</option>
+                            <option value="paid"  @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{translate('Paid')}}</option>
+                            <option value="unpaid"  @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{translate('Un-Paid')}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control aiz-selectpicker" name="payment_method" id="payment_method">
+                            <option value="">{{translate('P. Method')}}</option>
+                            @foreach (config('order.payments') as $method)
+                                <option value="{{ $method }}" @if ($payment_method == $method) selected @endif>{{translate($method)}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @can('delete_order')
+                        <div class="col-md-3 d-flex align-items-center justify-content-center dropdown">
+                            <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
+                                {{translate('Bulk Action')}}
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{translate('Delete selection')}}</a>
+                            </div>
+                        </div>
+                    @endcan
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Order Date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <input type="text" class="aiz-date-range form-control" value="{{ $shipping_date }}" name="shipping_date" placeholder="{{ translate('Shipping Date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Order Code') }}">
+                        </div>
                     </div>
                 </div>
-            @endcan
-
-            <div class="col-lg-1 ml-auto">
-                <select class="form-control aiz-selectpicker" name="delivery_status" id="delivery_status">
-                    <option value="">{{translate('D. Status')}}</option>
-                    @foreach (config('order.statuses') as $status)
-                        <option value="{{ $status }}" @if ($delivery_status == $status) selected @endif>{{translate($status)}}</option>
-                    @endforeach
-                </select>
             </div>
-            <div class="col-lg-1 ml-auto">
-                <select class="form-control aiz-selectpicker" name="payment_status" id="payment_status">
-                    <option value="">{{translate('P. Status')}}</option>
-                    <option value="paid"  @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{translate('Paid')}}</option>
-                    <option value="unpaid"  @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{translate('Un-Paid')}}</option>
-                </select>
-            </div>
-            <div class="col-lg-1 ml-auto">
-                <select class="form-control aiz-selectpicker" name="payment_method" id="payment_method">
-                    <option value="">{{translate('P. Method')}}</option>
-                    @foreach (config('order.payments') as $method)
-                        <option value="{{ $method }}" @if ($payment_method == $method) selected @endif>{{translate($method)}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-lg-2">
-                <div class="form-group mb-0">
-                    <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Order Date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="form-group mb-0">
-                    <input type="text" class="aiz-date-range form-control" value="{{ $shipping_date }}" name="shipping_date" placeholder="{{ translate('Shipping Date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
-                </div>
-            </div>
-            <div class="col-lg-1">
-                <div class="form-group mb-0">
-                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Order Code') }}">
-                </div>
-            </div>
-            <div class="col-auto">
+            <div class="col-sm-2 col-md-1 d-flex align-items-center justify-content-center">
                 <div class="form-group mb-0">
                     <button type="submit" class="btn btn-primary">{{ translate('Filter') }}</button>
                 </div>
@@ -88,7 +95,7 @@
                         <th>{{ translate('Order Code') }}</th>
                         <th data-breakpoints="md">{{ translate('Num. of Products') }}</th>
                         <th data-breakpoints="md">{{ translate('Customer') }}</th>
-                        <th data-breakpoints="md">{{ translate('Seller') }}</th>
+                        {{-- <th data-breakpoints="md">{{ translate('Seller') }}</th> --}}
                         <th data-breakpoints="md">{{ translate('Amount') }}</th>
                         <th data-breakpoints="md">{{ translate('Delivery Status') }}</th>
                         <th data-breakpoints="md">{{ translate('Payment method') }}</th>
@@ -126,16 +133,16 @@
                             @if ($order->user != null)
                                 {{ $order->user->name }}
                             @else
-                                Guest ({{ $order->guest_id }})
+                                {{ json_decode($order->shipping_address)->name }}
                             @endif
                         </td>
-                        <td>
+                        {{-- <td>
                             @if($order->shop)
                                 {{ $order->shop->name }}
                             @else
                                 {{ translate('Inhouse Order') }}
                             @endif
-                        </td>
+                        </td> --}}
                         <td>
                             {{ single_price($order->grand_total) }}
                         </td>

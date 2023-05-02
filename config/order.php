@@ -7,4 +7,7 @@ return [
     'payments' => [
         'bank', 'bkash', 'cash', 'nagad', 'rocket'
     ],
+    'couriers' => [
+        'Redex', 'Steadfast', 'Pathao', 'JananiQ', 'Sundarban'
+    ],
 ];
