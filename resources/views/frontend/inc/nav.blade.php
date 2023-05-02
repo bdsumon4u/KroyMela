@@ -505,10 +505,13 @@
 <div class="aiz-top-menu-sidebar collapse-sidebar-wrap sidebar-xl sidebar-left d-lg-none z-1035">
     <div class="overlay overlay-fixed dark c-pointer" data-toggle="class-toggle" data-target=".aiz-top-menu-sidebar" data-same=".hide-top-menu-bar"></div>
     <div class="collapse-sidebar c-scrollbar-light text-left">
-        <button type="button" class="btn btn-sm p-4 hide-top-menu-bar" data-toggle="class-toggle" data-target=".aiz-top-menu-sidebar" >
-            <i class="las la-times la-2x text-primary"></i>
-        </button>
-        @auth
+        <div class="d-flex justify-content-between align-items-center border">
+            <div class="h4 ml-4 fw-700">Categories</div>
+            <button type="button" class="btn btn-sm p-2 hide-top-menu-bar" data-toggle="class-toggle" data-target=".aiz-top-menu-sidebar" >
+                <i class="las la-times la-2x text-primary"></i>
+            </button>
+        </div>
+        {{-- @auth
             <span class="d-flex align-items-center nav-user-info pl-4">
                 <!-- Image -->
                 <span class="size-40px rounded-circle overflow-hidden border border-transparent nav-user-img">
@@ -536,20 +539,20 @@
                 <a href="{{ route('user.registration') }}" class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate('Registration')}}</a>
             </span>
         @endauth
-        <hr>
+        <hr> --}}
         <ul class="mb-0 pl-3 pb-3 h-100">
-            @if (get_setting('header_menu_labels') != null)
-                @foreach (json_decode( get_setting('header_menu_labels'), true) as $key => $value)
+            {{-- @if (get_setting('header_menu_labels') != null) --}}
+                @foreach (\App\Models\Category::orderBy('order_level')->get() as $key => $category)
                 <li class="mr-0">
-                    <a href="{{ json_decode( get_setting('header_menu_links'), true)[$key] }}" 
-                        class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                        @if (url()->current() == json_decode( get_setting('header_menu_links'), true)[$key]) active @endif">
-                        {{ translate($value) }}
+                    <a href="{{ route('products.category', $category->slug) }}" 
+                        class="fs-13 px-3 py-2 w-100 d-inline-block fw-700 text-dark header_menu_links
+                        @if (url()->current() == route('products.category', $category->slug)) active @endif">
+                        {{ $category->getTranslation('name') }}
                     </a>
                 </li>
                 @endforeach
-            @endif
-            @auth
+            {{-- @endif --}}
+            {{-- @auth
                 @if(isAdmin())
                     <hr>
                     <li class="mr-0">
@@ -598,7 +601,7 @@
                         {{ translate('Logout') }}
                     </a>
                 </li>
-            @endauth
+            @endauth --}}
         </ul>
         <br>
         <br>
