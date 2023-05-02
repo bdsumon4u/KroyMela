@@ -61,19 +61,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row d-none">
                             <label class="col-md-3 col-from-label">{{translate('Unit')}}</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="unit" placeholder="{{ translate('Unit (e.g. KG, Pc etc)') }}" required>
+                                <input type="text" class="form-control" name="unit" placeholder="{{ translate('Unit (e.g. KG, Pc etc)') }}" value="Pc" required>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row d-none">
                             <label class="col-md-3 col-from-label">{{translate('Weight')}} <small>({{ translate('In Kg') }})</small></label>
                             <div class="col-md-8">
                                 <input type="number" class="form-control" name="weight" step="0.01" value="0.00" placeholder="0.00">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row d-none">
                             <label class="col-md-3 col-from-label">{{translate('Minimum Purchase Qty')}} <span class="text-danger">*</span></label>
                             <div class="col-md-8">
                                 <input type="number" lang="en" class="form-control" name="min_qty" value="1" min="1" required>
