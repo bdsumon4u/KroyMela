@@ -57,13 +57,6 @@
                     </svg>
                 </a>
             </div> --}}
-            <!-- add to cart -->
-            <a class="cart-btn absolute-bottom-left w-100 h-35px aiz-p-hov-icon text-white fs-13 fw-700 d-flex flex-column justify-content-center align-items-center @if(in_array($product->id, $cart_added)) active @endif" 
-                href="javascript:void(0)" onclick="showAddToCartModal({{ $product->id }})">
-                <span class="cart-btn-text">{{ translate('Buy Now') }}</span>
-                <br>
-                <span><i class="las la-2x la-shopping-cart"></i></span>
-            </a>
         @endif
         @if($product->auction_product == 1 && $product->auction_start_date <= strtotime("now") && $product->auction_end_date >= strtotime("now"))
             <!-- Place Bid -->
@@ -79,10 +72,18 @@
             </a>
         @endif
     </div>
-    
-    <div class="p-2 p-md-3 text-left">
+    <div>
+        <!-- add to cart -->
+        <a class="cart-btn -absolute-bottom-left w-100 h-35px aiz-p-hov-icon text-white fs-13 fw-700 d-flex flex-column justify-content-center align-items-center @if(in_array($product->id, $cart_added)) active @endif" 
+            href="javascript:void(0)" onclick="showAddToCartModal({{ $product->id }})">
+            <span class="cart-btn-text">{{ translate('Buy Now') }}</span>
+            <br>
+            <span><i class="las la-2x la-shopping-cart"></i></span>
+        </a>
+    </div>
+    <div class="p-2 px-md-3 pt-md-2 pb-md-3 text-left">
         <!-- Product name -->
-        <h3 class="fw-400 fs-13 text-truncate-2 lh-1-4 mb-0 text-center">
+        <h3 class="fw-400 fs-13 text-truncate lh-1-4 mb-0 text-center">
             <a href="{{ $product_url }}" class="d-block text-reset hov-text-primary" title="{{  $product->getTranslation('name')  }}">{{  $product->getTranslation('name')  }}</a>
         </h3>
         <div class="fs-14 d-flex justify-content-center">
