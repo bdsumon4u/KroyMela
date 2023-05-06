@@ -93,8 +93,11 @@ class OrderController extends Controller
         }
 
         if ($request->search) {
-            $sort_search = $request->search;
-            $orders = $orders->where('code', 'like', '%' . $sort_search . '%');
+            $orders = $orders->where(function ($query) use ($sort_search) {
+                $query->where('code', 'like', '%' . $sort_search . '%')
+                    ->orWhere('shipping_address->phone', 'like', '%' . $sort_search . '%')
+                    ->orWhere('shipping_address->name', 'like', '%' . $sort_search . '%');
+            });
         }
         if ($request->payment_status != null) {
             $orders = $orders->where('payment_status', $request->payment_status);

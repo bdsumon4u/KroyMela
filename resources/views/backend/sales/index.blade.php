@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group mb-0">
-                            <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Order Code') }}">
+                            <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Search') }}">
                         </div>
                     </div>
                 </div>
