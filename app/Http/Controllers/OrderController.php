@@ -58,7 +58,7 @@ class OrderController extends Controller
         $payment_method = '';
         $courier = '';
 
-        $orders = Order::orderBy('id', 'desc');
+        $orders = Order::with('user')->withCount('orderDetails')->orderBy('id', 'desc');
         $admin_user_id = User::where('user_type', 'admin')->first()->id;
 
 
@@ -92,7 +92,7 @@ class OrderController extends Controller
             abort(403);
         }
 
-        if ($request->search) {
+        if ($sort_search = $request->search) {
             $orders = $orders->where(function ($query) use ($sort_search) {
                 $query->where('code', 'like', '%' . $sort_search . '%')
                     ->orWhere('shipping_address->phone', 'like', '%' . $sort_search . '%')

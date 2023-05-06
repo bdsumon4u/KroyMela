@@ -127,7 +127,7 @@
                             {{ $order->code }}@if($order->viewed == 0) <span class="badge badge-inline badge-info">{{translate('New')}}</span>@endif
                         </td>
                         <td>
-                            {{ count($order->orderDetails) }}
+                            {{ $order->order_details_count }}
                         </td>
                         <td>
                             @if ($order->user != null)
