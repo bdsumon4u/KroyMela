@@ -93,13 +93,14 @@
                         @endif
                         
                         <th>{{ translate('Code') }}</th>
+                        <th data-breakpoints="md">{{ translate('DateTime') }}</th>
                         <th data-breakpoints="md">{{ translate('No. Products') }}</th>
                         <th data-breakpoints="md">{{ translate('Customer') }}</th>
                         {{-- <th data-breakpoints="md">{{ translate('Seller') }}</th> --}}
                         <th data-breakpoints="md">{{ translate('Amount') }}</th>
-                        <th data-breakpoints="md">{{ translate('Delivery Status') }}</th>
-                        <th data-breakpoints="md">{{ translate('Payment method') }}</th>
-                        <th data-breakpoints="md">{{ translate('Payment Status') }}</th>
+                        <th data-breakpoints="md">{{ translate('D. Status') }}</th>
+                        <th data-breakpoints="md">{{ translate('P. Method') }}</th>
+                        {{-- <th data-breakpoints="md">{{ translate('P. Status') }}</th> --}}
                         @if (addon_is_activated('refund_request'))
                         <th>{{ translate('Refund') }}</th>
                         @endif
@@ -127,6 +128,9 @@
                             {{ $order->code }}@if($order->viewed == 0) <span class="badge badge-inline badge-info">{{translate('New')}}</span>@endif
                         </td>
                         <td>
+                            <div class='text-nowrap'>{{$order->created_at->format('d-M-Y')}}<br>{{$order->created_at->format('h:i A')}}</div>
+                        </td>
+                        <td>
                             {{ $order->order_details_count }}
                         </td>
                         <td>
@@ -151,13 +155,13 @@
                         <td>
                             {{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}
                         </td>
-                        <td>
+                        {{-- <td>
                             @if ($order->payment_status == 'paid')
                             <span class="badge badge-inline badge-success">{{translate('Paid')}}</span>
                             @else
                             <span class="badge badge-inline badge-danger">{{translate('Unpaid')}}</span>
                             @endif
-                        </td>
+                        </td> --}}
                         @if (addon_is_activated('refund_request'))
                         <td>
                             @if (count($order->refund_requests) > 0)

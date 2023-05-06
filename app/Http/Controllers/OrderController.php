@@ -124,7 +124,7 @@ class OrderController extends Controller
                 ->where('booked_at', '<=', date('Y-m-d', strtotime(explode(" to ", $shipping_date)[1])) . '  23:59:59');
         }
         $received_amount = $orders->sum('advanced');
-        $orders = $orders->paginate(15);
+        $orders = $orders->paginate(20);
         return view('backend.sales.index', compact('received_amount', 'orders', 'sort_search', 'payment_status', 'delivery_status', 'payment_method', 'courier', 'date', 'shipping_date'));
     }
 
