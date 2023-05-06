@@ -239,7 +239,9 @@ class OrderController extends Controller
             $order->payment_type = $request->payment_option;
             $order->delivery_viewed = '0';
             $order->payment_status_viewed = '0';
-            $order->code = date('Ymd-His') . rand(10, 99);
+            $lastOrderID = Order::latest('id')->select('id')->first()->id ?? 0;
+            // if orderID contains '-' then next orderID will be 1 else increment by 1
+            $order->code = (strpos($lastOrderID, '-') !== false) ? 1 : ((int)$lastOrderID + 1);
             $order->date = strtotime('now');
             $order->save();
 
