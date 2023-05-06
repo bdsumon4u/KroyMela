@@ -92,8 +92,8 @@
                             <th data-breakpoints="lg">#</th>
                         @endif
                         
-                        <th>{{ translate('Order Code') }}</th>
-                        <th data-breakpoints="md">{{ translate('Num. of Products') }}</th>
+                        <th>{{ translate('Code') }}</th>
+                        <th data-breakpoints="md">{{ translate('No. Products') }}</th>
                         <th data-breakpoints="md">{{ translate('Customer') }}</th>
                         {{-- <th data-breakpoints="md">{{ translate('Seller') }}</th> --}}
                         <th data-breakpoints="md">{{ translate('Amount') }}</th>
@@ -130,11 +130,10 @@
                             {{ $order->order_details_count }}
                         </td>
                         <td>
-                            @if ($order->user != null)
-                                {{ $order->user->name }}
-                            @else
-                                {{ json_decode($order->shipping_address)->name }}
-                            @endif
+                            @php $shipping_address = json_decode($order->shipping_address) @endphp
+                            <span>{{ $shipping_address->name }}</span> <br>
+                            <span>{{ $shipping_address->phone }}</span> <br>
+                            <span class="text-danger">{{ $order->additional_info }}</span>
                         </td>
                         {{-- <td>
                             @if($order->shop)

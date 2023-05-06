@@ -149,6 +149,9 @@ class OrderController extends Controller
         if ($courier = request('courier')) {
             $order->courier = $courier;
         }
+        if ($additional_info = request('additional_info')) {
+            $order->additional_info = $additional_info;
+        }
         $order->save();
         return view('backend.sales.show', compact('order', 'delivery_boys'));
     }
