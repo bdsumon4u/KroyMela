@@ -91,6 +91,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-3 col-from-label">{{translate('Courier Options')}}</label>
+                            <div class="col-sm-9">
+                                <input type="hidden" name="types[]" value="courier_options">
+                                <textarea name="courier_options" class="form-control">{{ get_setting('courier_options', config('order.couriers')) }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-3 col-from-label">{{translate('Delivery & Payment')}}</label>
                             <div class="col-sm-9">
                                 <input type="hidden" name="types[]" value="delivery_payment">

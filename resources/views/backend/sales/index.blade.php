@@ -10,8 +10,8 @@
                     <div class="col-md-3">
                         <select class="form-control aiz-selectpicker" name="courier" id="courier">
                             <option value="">{{translate('Courier')}}</option>
-                            @foreach (config('order.couriers') as $name)
-                                <option value="{{ $name }}" @if ($name == $courier) selected @endif>{{translate($name)}}</option>
+                            @foreach (explode(',', get_setting('courier_options', config('order.couriers'))) as $name)
+                                <option value="{{ $name = trim($name) }}" @if ($name == $courier) selected @endif>{{translate($name)}}</option>
                             @endforeach
                         </select>
                     </div>

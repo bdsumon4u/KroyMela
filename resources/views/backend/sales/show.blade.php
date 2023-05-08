@@ -97,8 +97,8 @@
                             <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
                                 id="update_courier">
                                 <option value="">{{ translate('Select Courier') }}</option>
-                                @foreach (config('order.couriers') as $courier)
-                                    <option value="{{ $courier }}" @if ($order->courier == $courier) selected @endif>
+                                @foreach (explode(',', get_setting('courier_options', config('order.couriers'))) as $courier)
+                                    <option value="{{ $courier = trim($courier) }}" @if ($order->courier == $courier) selected @endif>
                                         {{ translate($courier) }}
                                     </option>
                                 @endforeach
