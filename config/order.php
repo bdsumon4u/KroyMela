@@ -2,7 +2,7 @@
 
 return [
     'statuses' => [
-        'pending', 'confirmed', 'processing', 'shipping', 'delivered', 'cancelled', 'returned', 'refunded',
+        'pending', 'on hold', 'payment pending', 'invoice pending', 'processing', 'shipping', 'delivered', 'cancelled', 'returned',
     ],
     'payments' => [
         'bank', 'bkash', 'cash', 'nagad', 'rocket'
