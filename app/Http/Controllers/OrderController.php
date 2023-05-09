@@ -24,6 +24,7 @@ use App\Models\State;
 use App\Utility\NotificationUtility;
 use CoreComponentRepository;
 use App\Utility\SmsUtility;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
 class OrderController extends Controller
@@ -49,6 +50,27 @@ class OrderController extends Controller
     public function all_orders(Request $request)
     {
         CoreComponentRepository::instantiateShopRepository();
+
+        $_start = Carbon::parse(\request('start_d'));
+        $start = $_start->format('Y-m-d');
+        $_end = Carbon::parse(\request('end_d'));
+        $end = $_end->format('Y-m-d');
+
+        $orderQ = Order::query()
+            // ->whereBetween('created_at', [$_start->startOfDay()->toDateTimeString(), $_end->endOfDay()->toDateTimeString()])
+        ;
+        $_orders = ['Total' => (clone $orderQ)->count()];
+        foreach (config('order.statuses', []) as $status) {
+            // if ($status == 'Shipping') {
+            //     $orders[$status] = Order::query()
+            //         ->whereBetween('shipped_at', [$_start->startOfDay()->toDateTimeString(), $_end->endOfDay()->toDateTimeString()])
+            //         ->where('status', $status)
+            //         ->count();
+            //     continue;
+            // }
+            $_orders[$status] = (clone $orderQ)->where('delivery_status', $status)->count();
+        }
+        # Order Summary
 
         $date = $request->date;
         $shipping_date = $request->shipping_date;
@@ -125,7 +147,7 @@ class OrderController extends Controller
         }
         $received_amount = $orders->sum('advanced');
         $orders = $orders->paginate(20);
-        return view('backend.sales.index', compact('received_amount', 'orders', 'sort_search', 'payment_status', 'delivery_status', 'payment_method', 'courier', 'date', 'shipping_date'));
+        return view('backend.sales.index', compact('received_amount', 'orders', 'sort_search', 'payment_status', 'delivery_status', 'payment_method', 'courier', 'date', 'shipping_date', '_orders', 'start', 'end'));
     }
 
     public function show($id)
