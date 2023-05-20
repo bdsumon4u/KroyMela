@@ -71,15 +71,15 @@
     <!-- Brand Logo & Name -->
     @if ($detailedProduct->brand != null)
         <div class="d-flex flex-wrap align-items-center mb-3">
-            <span class="text-secondary fs-14 fw-400 mr-4 w-80px" style="white-space: nowrap;">{{ translate('Brand') }}</span><br>
+            <span class="text-secondary fs-14 fw-400 mr-4 w-80px" style="white-space: nowrap;">{{ translate('Brand') }}</span>
             <a href="{{ route('products.brand', $detailedProduct->brand->slug) }}"
-                    class="text-reset hov-text-primary fs-14 fw-700">{{ $detailedProduct->brand->name }}</a>
+                    class="text-reset hov-text-primary fs-14 fw-700" style="white-space: nowrap;">{{ $detailedProduct->brand->name }}</a>
         </div>
     @endif
     @if (($sku = $detailedProduct->stocks->first()->sku) != null)
         <div class="d-flex flex-wrap align-items-center mb-3">
-            <span class="text-secondary fs-14 fw-400 mr-4 w-80px" style="white-space: nowrap;">{{ translate('Product Code') }}</span><br>
-            <span class="text-reset hov-text-primary fs-14 fw-700">{{ $sku }}</span>
+            <span class="text-secondary fs-14 fw-400 mr-4 w-80px" style="white-space: nowrap;">{{ translate('Product Code') }}</span>
+            <span class="text-reset hov-text-primary fs-14 fw-700" style="white-space: nowrap;">{{ $sku }}</span>
         </div>
     @endif
     
